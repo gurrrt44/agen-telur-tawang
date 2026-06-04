@@ -65,7 +65,7 @@ export function ThemeToggle() {
         pointer-events: none;
         background: ${nextTheme === "dark" ? "#0e0d0a" : "#fbfaf6"};
         clip-path: circle(0px at ${x}px ${y}px);
-        transition: clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        transition: clip-path 1.8s cubic-bezier(0.22, 1, 0.36, 1);
       `;
       document.body.appendChild(overlay);
 
@@ -83,13 +83,13 @@ export function ThemeToggle() {
         } else {
           document.documentElement.classList.remove("dark");
         }
-      }, 600);
+      }, 900);
 
       // Remove overlay after animation
       setTimeout(() => {
         overlay.remove();
         setIsAnimating(false);
-      }, 1300);
+      }, 1900);
     }
   }, [theme, isAnimating]);
 
