@@ -145,6 +145,18 @@ export function Pricing() {
     <section id="harga" className="border-b border-border">
       <div className="mx-auto max-w-[1280px] px-6 py-20 lg:px-10">
         <FadeIn><SectionLabel n="02" label="Indeks Harga Telur — per kg" /></FadeIn>
+        <FadeIn delay={0.05}>
+          <div className="mt-3 inline-flex items-center gap-2 rounded-sm border border-accent/20 bg-accent/8 px-3 py-1.5">
+            <motion.span
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="size-1.5 rounded-full bg-accent"
+            />
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+              Harga diperbarui otomatis setiap hari pukul 10:00 WIB · Sumber: SunEgg.id
+            </span>
+          </div>
+        </FadeIn>
 
         {/* Market selector */}
         <FadeIn delay={0.1}>
