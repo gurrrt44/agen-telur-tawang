@@ -49,7 +49,7 @@ const FALLBACK_PHOTOS: Photo[] = [
 ];
 
 export function GalleryMarquee() {
-  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [photos, setPhotos] = useState<Photo[]>(FALLBACK_PHOTOS);
 
   useEffect(() => {
     async function fetchPhotos() {
