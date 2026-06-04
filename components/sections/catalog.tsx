@@ -18,7 +18,7 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
   };
 
   return (
-    <section id="paket" className="border-b border-border bg-secondary/40">
+    <section id="paket" className="scroll-mt-20 border-b border-border bg-secondary/40">
       <div className="mx-auto max-w-[1280px] px-6 py-20 lg:px-10">
         <FadeIn><SectionLabel n="03" label="Katalog Paket — pilih, lalu pesan" /></FadeIn>
         <div className="mt-10 flex flex-wrap items-end justify-between gap-6">

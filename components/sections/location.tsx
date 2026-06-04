@@ -7,7 +7,7 @@ import { FadeIn } from "@/components/ui/fade-in";
 
 export function Location() {
   return (
-    <section id="lokasi" className="border-b border-border bg-foreground text-background">
+    <section id="lokasi" className="scroll-mt-20 border-b border-border bg-foreground text-background">
       <div className="mx-auto max-w-[1280px] px-6 py-20 lg:px-10">
         <FadeIn><SectionLabel n="05" label="Kunjungi Toko" dark /></FadeIn>
 

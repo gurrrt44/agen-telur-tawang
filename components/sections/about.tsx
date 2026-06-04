@@ -8,7 +8,7 @@ import { CursorGlowCard } from "@/components/ui/cursor-glow-card";
 
 export function About() {
   return (
-    <section id="tentang" className="border-b border-border bg-secondary/40">
+    <section id="tentang" className="scroll-mt-20 border-b border-border bg-secondary/40">
       <div className="mx-auto max-w-[1280px] px-6 py-20 lg:px-10">
         <FadeIn><SectionLabel n="01" label="Tentang Telur Kami" /></FadeIn>
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">

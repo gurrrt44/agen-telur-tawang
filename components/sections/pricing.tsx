@@ -142,7 +142,7 @@ export function Pricing() {
   const chartInView = useInView(chartRef, { once: false, margin: "-60px" });
 
   return (
-    <section id="harga" className="border-b border-border">
+    <section id="harga" className="scroll-mt-20 border-b border-border">
       <div className="mx-auto max-w-[1280px] px-6 py-20 lg:px-10">
         <FadeIn><SectionLabel n="02" label="Indeks Harga Telur — per kg" /></FadeIn>
         <FadeIn delay={0.05}>

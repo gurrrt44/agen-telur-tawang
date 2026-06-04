@@ -44,7 +44,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
   };
 
   return (
-    <section id="pesan" className="border-b border-border">
+    <section id="pesan" className="scroll-mt-20 border-b border-border">
       <div className="mx-auto max-w-[1280px] px-6 py-20 lg:px-10">
         <FadeIn><SectionLabel n="04" label="Pemesanan — via WhatsApp" /></FadeIn>
 
