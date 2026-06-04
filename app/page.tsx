@@ -7,6 +7,7 @@ import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Pricing } from "@/components/sections/pricing";
 import { Catalog } from "@/components/sections/catalog";
+import { GalleryMarquee } from "@/components/sections/gallery-marquee";
 import { OrderForm } from "@/components/sections/order-form";
 import { Location } from "@/components/sections/location";
 import { Footer } from "@/components/sections/footer";
@@ -23,6 +24,7 @@ export default function HomePage() {
       <About />
       <Pricing />
       <Catalog onSelectBundle={setSelectedBundle} />
+      <GalleryMarquee />
       <OrderForm selectedBundle={selectedBundle} onBundleChange={setSelectedBundle} />
       <Location />
       <Footer />
