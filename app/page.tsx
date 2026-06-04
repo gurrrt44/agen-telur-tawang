@@ -10,10 +10,11 @@ import { Catalog } from "@/components/sections/catalog";
 import { OrderForm } from "@/components/sections/order-form";
 import { Location } from "@/components/sections/location";
 import { Footer } from "@/components/sections/footer";
-
 import { FloatingContact } from "@/components/ui/floating-contact";
 
 export default function HomePage() {
+  const [selectedBundle, setSelectedBundle] = useState("");
+
   return (
     <div className="min-h-screen w-full bg-background text-foreground">
       <Toaster position="top-center" richColors />
@@ -21,8 +22,8 @@ export default function HomePage() {
       <Hero />
       <About />
       <Pricing />
-      <Catalog />
-      <OrderForm />
+      <Catalog onSelectBundle={setSelectedBundle} />
+      <OrderForm selectedBundle={selectedBundle} onBundleChange={setSelectedBundle} />
       <Location />
       <Footer />
       <FloatingContact />

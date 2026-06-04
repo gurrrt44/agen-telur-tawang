@@ -9,11 +9,15 @@ import { FadeIn } from "@/components/ui/fade-in";
 
 const WA_NUMBER = "6285606022228";
 
-export function OrderForm() {
+interface OrderFormProps {
+  selectedBundle: string;
+  onBundleChange: (id: string) => void;
+}
+
+export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
   const [form, setForm] = useState({
     nama: "",
     alamat: "",
-    paket: "",
     metode: "antar",
     catatan: "",
   });
@@ -22,8 +26,8 @@ export function OrderForm() {
     e.preventDefault();
     if (!form.nama) return;
 
-    const paketLabel = form.paket
-      ? BUNDLES.find((b) => b.id === form.paket)?.name ?? form.paket
+    const paketLabel = selectedBundle
+      ? BUNDLES.find((b) => b.id === selectedBundle)?.name ?? selectedBundle
       : "belum dipilih";
 
     const message =
@@ -95,15 +99,15 @@ export function OrderForm() {
                       key={b.id}
                       type="button"
                       whileTap={{ scale: 0.96 }}
-                      onClick={() => setForm({ ...form, paket: form.paket === b.id ? "" : b.id })}
+                      onClick={() => onBundleChange(selectedBundle === b.id ? "" : b.id)}
                       className={`flex flex-col items-start gap-0.5 border p-3 text-left transition ${
-                        form.paket === b.id
+                        selectedBundle === b.id
                           ? "border-foreground bg-foreground text-background"
                           : "border-border hover:bg-secondary"
                       }`}
                     >
                       <span className="font-serif text-sm">{b.name}</span>
-                      <span className={`font-mono text-[9px] uppercase tracking-[0.14em] ${form.paket === b.id ? "text-background/70" : "text-muted-foreground"}`}>
+                      <span className={`font-mono text-[9px] uppercase tracking-[0.14em] ${selectedBundle === b.id ? "text-background/70" : "text-muted-foreground"}`}>
                         {b.weight}
                       </span>
                     </motion.button>
