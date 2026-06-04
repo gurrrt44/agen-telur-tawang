@@ -53,25 +53,25 @@ export function Header() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md"
     >
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 lg:px-10">
-        <Link href="/" className="flex items-center gap-3">
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-2.5 lg:px-8">
+        <Link href="/" className="flex items-center gap-2.5">
           <motion.div
             animate={{ rotate: [0, -8, 8, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="grid size-9 place-items-center rounded-sm bg-foreground text-background"
+            className="grid size-7 place-items-center rounded-sm bg-foreground text-background"
           >
-            <Egg className="size-4" strokeWidth={1.5} />
+            <Egg className="size-3.5" strokeWidth={1.5} />
           </motion.div>
           <div className="leading-tight">
-            <div className="font-serif text-xl font-semibold">Agen Telur Tawang</div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground hidden sm:block font-medium">
+            <div className="font-serif text-base font-semibold">Agen Telur Tawang</div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.15em] text-muted-foreground hidden sm:block font-medium">
               est. 2008 — Mojokrapak, Jombang, Jawa Timur
             </div>
           </div>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-7 font-mono text-sm uppercase tracking-[0.16em] text-muted-foreground md:flex font-medium">
+        <nav className="hidden items-center gap-5 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground md:flex font-medium">
           {navLinks.map((link) => {
             const isActive = link.key === "galeri"
               ? pathname.startsWith("/galeri")
@@ -94,15 +94,15 @@ export function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {/* Desktop Call to Action */}
           <motion.a
             href={pathname === "/" ? "#pesan" : "/#pesan"}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            className="hidden items-center gap-2 rounded-sm bg-accent px-5 py-2.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-foreground md:inline-flex shadow-sm hover:shadow-md"
+            className="hidden items-center gap-1.5 rounded-sm bg-accent px-4 py-1.5 font-mono text-xs font-bold uppercase tracking-[0.14em] text-foreground md:inline-flex shadow-sm hover:shadow-md"
           >
-            Pesan <ArrowUpRight className="size-4" />
+            Pesan <ArrowUpRight className="size-3.5" />
           </motion.a>
 
           <ThemeToggle />
@@ -110,10 +110,10 @@ export function Header() {
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="grid size-9 place-items-center rounded-sm border border-border text-foreground md:hidden hover:bg-secondary focus:outline-none"
+            className="grid size-8 place-items-center rounded-sm border border-border text-foreground md:hidden hover:bg-secondary focus:outline-none"
             aria-label="Toggle menu"
           >
-            {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            {isOpen ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
         </div>
       </div>

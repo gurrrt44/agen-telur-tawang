@@ -186,7 +186,7 @@ export function ThemeToggle() {
         <motion.div
           className="theme-toggle-knob"
           animate={{
-            x: isDark ? 26 : 0,
+            x: isDark ? 20 : 0,
           }}
           transition={{
             type: "spring",
