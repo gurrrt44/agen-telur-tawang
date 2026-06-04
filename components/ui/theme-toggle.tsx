@@ -65,7 +65,7 @@ export function ThemeToggle() {
         pointer-events: none;
         background: ${nextTheme === "dark" ? "#0e0d0a" : "#fbfaf6"};
         clip-path: circle(0px at ${x}px ${y}px);
-        transition: clip-path 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1);
       `;
       document.body.appendChild(overlay);
 
@@ -83,13 +83,13 @@ export function ThemeToggle() {
         } else {
           document.documentElement.classList.remove("dark");
         }
-      }, 350);
+      }, 600);
 
       // Remove overlay after animation
       setTimeout(() => {
         overlay.remove();
         setIsAnimating(false);
-      }, 750);
+      }, 1300);
     }
   }, [theme, isAnimating]);
 
@@ -214,7 +214,7 @@ export function ThemeToggle() {
                   opacity: 0,
                 }}
                 transition={{
-                  duration: 0.65,
+                  duration: 0.85,
                   ease: "easeOut",
                   times: [0, 0.2, 0.4, 0.6, 0.8, 1],
                 }}
@@ -237,8 +237,8 @@ export function ThemeToggle() {
                       opacity: [0, 1, 0.6, 1, 0.85],
                     }}
                     transition={{
-                      duration: 0.5,
-                      delay: 0.15 + i * 0.04,
+                      duration: 0.65,
+                      delay: 0.2 + i * 0.05,
                       ease: "easeOut",
                       times: [0, 0.3, 0.5, 0.7, 1],
                     }}
@@ -261,7 +261,7 @@ export function ThemeToggle() {
                   opacity: 0,
                 }}
                 transition={{
-                  duration: 0.65,
+                  duration: 0.85,
                   ease: "easeOut",
                   times: [0, 0.2, 0.4, 0.6, 0.8, 1],
                 }}

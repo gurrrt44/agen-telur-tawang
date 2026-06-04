@@ -120,7 +120,7 @@
 
 /* ==========================================
    VIEW TRANSITIONS — Circular Wipe Effect
-   (for browsers that support View Transitions API)
+   Works in BOTH directions (light→dark & dark→light)
    ========================================== */
 
 ::view-transition-old(root),
@@ -135,22 +135,7 @@
 
 ::view-transition-new(root) {
   z-index: 9999;
-  animation: circle-wipe-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* When switching from dark to light, reverse the stacking */
-html.dark::view-transition-old(root) {
-  z-index: 9999;
-  animation: none;
-}
-
-html.dark::view-transition-new(root) {
-  z-index: 1;
-  animation: none;
-}
-
-html:not(.dark)::view-transition-new(root) {
-  animation: circle-wipe-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: circle-wipe-in 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes circle-wipe-in {
