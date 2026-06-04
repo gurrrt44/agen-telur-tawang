@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [isAnimating, setIsAnimating] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");
@@ -14,90 +12,21 @@ export function ThemeToggle() {
   }, []);
 
   const toggleTheme = useCallback(() => {
-    if (isAnimating) return;
-
     const nextTheme = theme === "light" ? "dark" : "light";
 
-    // Get button position for circular wipe origin
-    const btn = buttonRef.current;
-    if (!btn) return;
-    const rect = btn.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-
-    // Calculate max radius needed to cover entire viewport
-    const maxRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    );
-
-    // Try View Transitions API first (modern browsers)
-    if (document.startViewTransition) {
-      setIsAnimating(true);
-
-      // Set CSS custom property for circle origin
-      document.documentElement.style.setProperty("--toggle-x", `${x}px`);
-      document.documentElement.style.setProperty("--toggle-y", `${y}px`);
-      document.documentElement.style.setProperty("--toggle-max-r", `${maxRadius}px`);
-
-      const transition = document.startViewTransition(() => {
-        setTheme(nextTheme);
-        localStorage.setItem("theme", nextTheme);
-        if (nextTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      });
-
-      transition.finished.then(() => {
-        setIsAnimating(false);
-      });
+    setTheme(nextTheme);
+    localStorage.setItem("theme", nextTheme);
+    if (nextTheme === "dark") {
+      document.documentElement.classList.add("dark");
     } else {
-      // Fallback: use overlay element for circular wipe
-      setIsAnimating(true);
-
-      const overlay = document.createElement("div");
-      overlay.style.cssText = `
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        pointer-events: none;
-        background: ${nextTheme === "dark" ? "#0e0d0a" : "#fbfaf6"};
-        clip-path: circle(0px at ${x}px ${y}px);
-        transition: clip-path 1.8s cubic-bezier(0.22, 1, 0.36, 1);
-      `;
-      document.body.appendChild(overlay);
-
-      // Trigger animation
-      requestAnimationFrame(() => {
-        overlay.style.clipPath = `circle(${maxRadius}px at ${x}px ${y}px)`;
-      });
-
-      // Apply theme change midway
-      setTimeout(() => {
-        setTheme(nextTheme);
-        localStorage.setItem("theme", nextTheme);
-        if (nextTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      }, 900);
-
-      // Remove overlay after animation
-      setTimeout(() => {
-        overlay.remove();
-        setIsAnimating(false);
-      }, 1900);
+      document.documentElement.classList.remove("dark");
     }
-  }, [theme, isAnimating]);
+  }, [theme]);
 
   const isDark = theme === "dark";
 
   return (
     <motion.button
-      ref={buttonRef}
       onClick={toggleTheme}
       className="theme-toggle-pill"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
