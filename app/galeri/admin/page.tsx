@@ -6,14 +6,16 @@ import { Footer } from "@/components/sections/footer";
 import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
 import { motion } from "motion/react";
-import { Lock, Eye, Trash2, CheckCircle2, XCircle, LogOut, Loader2, AlertCircle } from "lucide-react";
+import { Lock, Eye, Trash2, CheckCircle2, XCircle, LogOut, Loader2, AlertCircle, Edit3, Check, X } from "lucide-react";
 import { toast } from "sonner";
+import { LABEL_COLORS } from "../page";
 
 interface Photo {
   id: number;
   image_url: string;
   caption: string;
   submitter_name: string;
+  label?: string;
   approved: boolean;
   created_at: string;
 }
@@ -26,6 +28,62 @@ export default function GalleryAdminPage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loadingPhotos, setLoadingPhotos] = useState(false);
   const [activeTab, setActiveTab] = useState<"pending" | "approved">("pending");
+
+  // Edit states
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editSubmitterName, setEditSubmitterName] = useState("");
+  const [editCaption, setEditCaption] = useState("");
+  const [editLabel, setEditLabel] = useState("Puas");
+
+  const startEditing = (photo: Photo) => {
+    setEditingId(photo.id);
+    setEditSubmitterName(photo.submitter_name || "");
+    setEditCaption(photo.caption || "");
+    setEditLabel(photo.label || "Puas");
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditSubmitterName("");
+    setEditCaption("");
+    setEditLabel("Puas");
+  };
+
+  const saveEdit = async (photoId: number) => {
+    if (!adminPassword) return;
+
+    const loadingToast = toast.loading("Menyimpan perubahan...");
+    try {
+      const res = await fetch("/api/gallery/photos", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword,
+        },
+        body: JSON.stringify({
+          id: photoId,
+          submitter_name: editSubmitterName,
+          caption: editCaption,
+          label: editLabel,
+        }),
+      });
+
+      const data = await res.json();
+      toast.dismiss(loadingToast);
+
+      if (data.success) {
+        toast.success("Foto berhasil diperbarui!");
+        setEditingId(null);
+        fetchAdminPhotos();
+      } else {
+        toast.error("Gagal memperbarui foto: " + data.error);
+      }
+    } catch (err) {
+      toast.dismiss(loadingToast);
+      console.error(err);
+      toast.error("Terjadi kesalahan.");
+    }
+  };
 
   // Periksa apakah password sudah tersimpan di sessionStorage saat halaman dimuat
   useEffect(() => {
@@ -324,44 +382,126 @@ export default function GalleryAdminPage() {
                         </a>
                       </div>
 
-                      <div className="mt-4 flex-1 flex flex-col justify-between">
-                        <div>
-                          <div className="font-mono text-[9px] uppercase tracking-wider text-accent font-semibold">
-                            Pengirim: {photo.submitter_name}
+                      {editingId === photo.id ? (
+                        /* TAMPILAN EDITING MODE (CRUD) */
+                        <div className="mt-4 flex-1 flex flex-col justify-between">
+                          <div className="space-y-3.5">
+                            {/* Input Nama Pengirim */}
+                            <label className="block">
+                              <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">Pengirim:</span>
+                              <input
+                                type="text"
+                                value={editSubmitterName}
+                                onChange={(e) => setEditSubmitterName(e.target.value)}
+                                className="w-full bg-secondary/40 text-sm border border-border px-2.5 py-1.5 rounded-sm outline-none mt-1 font-serif focus:border-accent transition"
+                                maxLength={30}
+                              />
+                            </label>
+
+                            {/* Seleksi Label */}
+                            <label className="block">
+                              <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">Penilaian (Label):</span>
+                              <select
+                                value={editLabel}
+                                onChange={(e) => setEditLabel(e.target.value)}
+                                className="w-full bg-secondary/40 text-sm border border-border px-2.5 py-1.5 rounded-sm outline-none mt-1 font-mono focus:border-accent transition cursor-pointer"
+                              >
+                                <option value="Puas">Puas</option>
+                                <option value="Cukup Puas">Cukup Puas</option>
+                                <option value="Kurang Puas">Kurang Puas</option>
+                                <option value="Kurang">Kurang</option>
+                              </select>
+                            </label>
+
+                            {/* Input Pesan/Caption */}
+                            <label className="block">
+                              <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">Pesan / Caption:</span>
+                              <textarea
+                                value={editCaption}
+                                onChange={(e) => setEditCaption(e.target.value)}
+                                rows={3}
+                                className="w-full bg-secondary/40 text-sm border border-border px-2.5 py-1.5 rounded-sm outline-none mt-1 font-serif resize-none focus:border-accent transition"
+                                maxLength={140}
+                              />
+                            </label>
                           </div>
-                          <p className="mt-2 font-serif text-sm italic text-foreground/90 leading-relaxed">
-                            "{photo.caption || "Tanpa caption"}"
-                          </p>
-                        </div>
 
-                        <div className="mt-6 pt-4 border-t border-border flex items-center justify-between gap-3">
-                          {/* Tombol Hapus */}
-                          <button
-                            onClick={() => handleDelete(photo.id)}
-                            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-destructive hover:bg-destructive/10 px-3 py-1.5 rounded-sm transition"
-                            title="Hapus foto"
-                          >
-                            <Trash2 className="size-4" /> Hapus
-                          </button>
-
-                          {/* Tombol Setujui / Batalkan */}
-                          {photo.approved ? (
+                          {/* Tombol Simpan / Batal */}
+                          <div className="mt-6 pt-4 border-t border-border grid grid-cols-2 gap-3">
                             <button
-                              onClick={() => handleApproveToggle(photo.id, true)}
-                              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-muted-foreground hover:bg-secondary px-3 py-1.5 rounded-sm transition"
+                              onClick={cancelEditing}
+                              className="inline-flex items-center justify-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-muted-foreground border border-border py-2 rounded-sm hover:bg-secondary transition"
                             >
-                              <XCircle className="size-4 text-orange-600" /> Batal ACC
+                              <X className="size-4" /> Batal
                             </button>
-                          ) : (
+                            
                             <button
-                              onClick={() => handleApproveToggle(photo.id, false)}
-                              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-emerald-700 hover:bg-emerald-700/10 px-3 py-1.5 rounded-sm transition font-semibold"
+                              onClick={() => saveEdit(photo.id)}
+                              className="inline-flex items-center justify-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-background bg-foreground py-2 rounded-sm hover:bg-foreground/90 transition font-semibold"
                             >
-                              <CheckCircle2 className="size-4" /> Setujui
+                              <Check className="size-4 text-background" /> Simpan
                             </button>
-                          )}
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        /* TAMPILAN NORMAL (PREVIEW & CONTROL) */
+                        <div className="mt-4 flex-1 flex flex-col justify-between">
+                          <div>
+                            {photo.label && (
+                              <div className="mb-2">
+                                <span className={`inline-block px-2.5 py-0.5 border text-[9px] uppercase tracking-widest font-mono rounded-sm ${LABEL_COLORS[photo.label]?.badge || "bg-secondary text-muted-foreground border-border"}`}>
+                                  {photo.label}
+                                </span>
+                              </div>
+                            )}
+                            <div className="font-mono text-[9px] uppercase tracking-wider text-accent font-semibold">
+                              Pengirim: {photo.submitter_name}
+                            </div>
+                            <p className="mt-2 font-serif text-sm italic text-foreground/90 leading-relaxed">
+                              "{photo.caption || "Tanpa caption"}"
+                            </p>
+                          </div>
+
+                          <div className="mt-6 pt-4 border-t border-border flex flex-col gap-2">
+                            <div className="flex items-center justify-between gap-2">
+                              {/* Tombol Edit */}
+                              <button
+                                onClick={() => startEditing(photo)}
+                                className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-foreground hover:bg-secondary px-3 py-1.5 rounded-sm transition"
+                                title="Edit data foto"
+                              >
+                                <Edit3 className="size-4 text-accent" /> Edit
+                              </button>
+
+                              {/* Tombol Hapus */}
+                              <button
+                                onClick={() => handleDelete(photo.id)}
+                                className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-destructive hover:bg-destructive/10 px-3 py-1.5 rounded-sm transition"
+                                title="Hapus foto"
+                              >
+                                <Trash2 className="size-4" /> Hapus
+                              </button>
+                            </div>
+
+                            {/* Tombol Setujui / Batalkan */}
+                            {photo.approved ? (
+                              <button
+                                onClick={() => handleApproveToggle(photo.id, true)}
+                                className="w-full inline-flex items-center justify-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-muted-foreground hover:bg-secondary py-2 rounded-sm border border-border transition"
+                              >
+                                <XCircle className="size-4 text-orange-600" /> Batal ACC
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => handleApproveToggle(photo.id, false)}
+                                className="w-full inline-flex items-center justify-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-emerald-700 hover:bg-emerald-700/10 py-2 rounded-sm border border-emerald-700/30 transition font-semibold"
+                              >
+                                <CheckCircle2 className="size-4" /> Setujui
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

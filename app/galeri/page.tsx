@@ -15,8 +15,36 @@ interface Photo {
   image_url: string;
   caption: string;
   submitter_name: string;
+  label?: string;
   created_at: string;
 }
+
+export const LABEL_COLORS: Record<string, { bg: string; text: string; border: string; badge: string }> = {
+  "Puas": {
+    bg: "bg-emerald-600 hover:bg-emerald-700 text-white",
+    text: "text-emerald-600",
+    border: "border-emerald-600",
+    badge: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+  },
+  "Cukup Puas": {
+    bg: "bg-amber-500 hover:bg-amber-600 text-white",
+    text: "text-amber-600",
+    border: "border-amber-500",
+    badge: "bg-amber-500/10 text-amber-600 border-amber-500/20"
+  },
+  "Kurang Puas": {
+    bg: "bg-orange-500 hover:bg-orange-600 text-white",
+    text: "text-orange-600",
+    border: "border-orange-500",
+    badge: "bg-orange-500/10 text-orange-600 border-orange-500/20"
+  },
+  "Kurang": {
+    bg: "bg-rose-500 hover:bg-rose-600 text-white",
+    text: "text-rose-600",
+    border: "border-rose-500",
+    badge: "bg-rose-500/10 text-rose-600 border-rose-500/20"
+  }
+};
 
 export default function GalleryPage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -27,6 +55,7 @@ export default function GalleryPage() {
   const [submitterName, setSubmitterName] = useState("");
   const [caption, setCaption] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [ratingLabel, setRatingLabel] = useState("Puas");
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
@@ -83,6 +112,7 @@ export default function GalleryPage() {
       formData.append("file", selectedFile);
       formData.append("caption", caption);
       formData.append("submitter_name", submitterName || "Anonim");
+      formData.append("label", ratingLabel);
 
       const res = await fetch("/api/gallery/photos", {
         method: "POST",
@@ -100,6 +130,7 @@ export default function GalleryPage() {
       setSubmitterName("");
       setCaption("");
       setSelectedFile(null);
+      setRatingLabel("Puas");
       setModalOpen(false);
       
     } catch (err: any) {
@@ -186,15 +217,25 @@ export default function GalleryPage() {
                     />
                   </div>
                   <div className="mt-4 flex-1 flex flex-col justify-between">
-                    {photo.caption ? (
-                      <p className="font-serif text-base italic text-foreground/90 leading-relaxed">
-                        "{photo.caption}"
-                      </p>
-                    ) : (
-                      <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/60 italic">
-                        Tanpa pesan tertulis.
-                      </p>
-                    )}
+                    <div>
+                      {photo.label && (
+                        <div className="mb-2.5">
+                          <span className={`inline-block px-2.5 py-0.5 border text-[9px] uppercase tracking-widest font-mono rounded-sm ${LABEL_COLORS[photo.label]?.badge || "bg-secondary text-muted-foreground border-border"}`}>
+                            {photo.label}
+                          </span>
+                        </div>
+                      )}
+                      
+                      {photo.caption ? (
+                        <p className="font-serif text-base italic text-foreground/90 leading-relaxed">
+                          "{photo.caption}"
+                        </p>
+                      ) : (
+                        <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/60 italic">
+                          Tanpa pesan tertulis.
+                        </p>
+                      )}
+                    </div>
                     
                     <div className="mt-5 pt-3 border-t border-border/50 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
                       <span className="flex items-center gap-1.5 text-accent font-semibold">
@@ -279,6 +320,32 @@ export default function GalleryPage() {
                       </div>
                     )}
                   </label>
+                </div>
+
+                {/* Rating Label */}
+                <div>
+                  <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-2">Penilaian Anda *</span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {Object.keys(LABEL_COLORS).map((lbl) => {
+                      const isActive = ratingLabel === lbl;
+                      const config = LABEL_COLORS[lbl];
+                      return (
+                        <button
+                          key={lbl}
+                          type="button"
+                          onClick={() => setRatingLabel(lbl)}
+                          className={`py-2 px-2 text-center text-[10px] font-mono uppercase tracking-wider border rounded-sm transition-all duration-200 ${
+                            isActive 
+                              ? config.bg + " " + config.border + " shadow-sm font-semibold scale-102"
+                              : "border-border text-muted-foreground hover:bg-secondary/40 hover:text-foreground"
+                          }`}
+                          disabled={uploading}
+                        >
+                          {lbl}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Submitter Name */}

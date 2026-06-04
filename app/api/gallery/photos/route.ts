@@ -64,12 +64,14 @@ export async function POST(request: NextRequest) {
     let imageUrl = "";
     let caption = "";
     let submitterName = "";
+    let label = "Puas";
 
     if (contentType.includes("multipart/form-data")) {
       const formData = await request.formData();
       const file = formData.get("file") as File | null;
       caption = formData.get("caption") as string || "";
       submitterName = formData.get("submitter_name") as string || "Anonim";
+      label = formData.get("label") as string || "Puas";
 
       if (!file) {
         return NextResponse.json({ success: false, error: "File gambar harus disertakan" }, { status: 400 });
@@ -102,6 +104,7 @@ export async function POST(request: NextRequest) {
       imageUrl = body.image_url;
       caption = body.caption || "";
       submitterName = body.submitter_name || "Anonim";
+      label = body.label || "Puas";
 
       if (!imageUrl) {
         return NextResponse.json({ success: false, error: "Image URL is required" }, { status: 400 });
@@ -121,6 +124,7 @@ export async function POST(request: NextRequest) {
         image_url: imageUrl,
         caption: caption,
         submitter_name: submitterName,
+        label: label,
         approved: false, // Selalu default ke false untuk persetujuan admin
       }),
     });
@@ -137,7 +141,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// PUT: Admin menyetujui / membatalkan persetujuan foto
+// PUT: Admin memperbarui / menyetujui / mengedit data foto
 export async function PUT(request: NextRequest) {
   const { url, adminKey } = getSupabaseConfig();
   if (!url) {
@@ -152,11 +156,18 @@ export async function PUT(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { id, approved } = body;
+    const { id, approved, caption, submitter_name, label } = body;
 
     if (!id) {
       return NextResponse.json({ success: false, error: "Photo ID is required" }, { status: 400 });
     }
+
+    // Buat objek payload update secara dinamis sesuai parameter yang dikirim
+    const updateData: any = {};
+    if (approved !== undefined) updateData.approved = approved;
+    if (caption !== undefined) updateData.caption = caption;
+    if (submitter_name !== undefined) updateData.submitter_name = submitter_name;
+    if (label !== undefined) updateData.label = label;
 
     const res = await fetch(`${url}/rest/v1/gallery_photos?id=eq.${id}`, {
       method: "PATCH",
@@ -165,7 +176,7 @@ export async function PUT(request: NextRequest) {
         "Authorization": `Bearer ${adminKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ approved }),
+      body: JSON.stringify(updateData),
     });
 
     if (!res.ok) {

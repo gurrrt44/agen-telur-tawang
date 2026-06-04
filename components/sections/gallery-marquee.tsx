@@ -10,8 +10,16 @@ interface Photo {
   image_url: string;
   caption: string;
   submitter_name: string;
+  label?: string;
   created_at?: string;
 }
+
+const MARQUEE_LABEL_BADGES: Record<string, string> = {
+  "Puas": "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+  "Cukup Puas": "bg-amber-500/20 text-amber-300 border-amber-500/30",
+  "Kurang Puas": "bg-orange-500/20 text-orange-300 border-orange-500/30",
+  "Kurang": "bg-rose-500/20 text-rose-300 border-rose-500/30"
+};
 
 const FALLBACK_PHOTOS: Photo[] = [
   {
@@ -118,9 +126,16 @@ export function GalleryMarquee() {
               
               {/* Overlay Glassmorphism */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100 flex flex-col justify-end p-5">
-                <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-accent">
-                  <Sparkles className="size-3" />
-                  <span>Kiriman · {photo.submitter_name}</span>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-accent">
+                    <Sparkles className="size-3" />
+                    <span>Kiriman · {photo.submitter_name}</span>
+                  </div>
+                  {photo.label && (
+                    <span className={`px-2 py-0.5 border text-[7px] uppercase tracking-wider font-mono rounded-sm ${MARQUEE_LABEL_BADGES[photo.label] || "bg-slate-500/20 text-slate-300 border-slate-500/30"}`}>
+                      {photo.label}
+                    </span>
+                  )}
                 </div>
                 {photo.caption && (
                   <p className="mt-2 font-serif text-sm leading-relaxed text-slate-100 line-clamp-2">
