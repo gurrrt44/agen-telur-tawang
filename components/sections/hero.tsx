@@ -57,7 +57,7 @@ export function Hero() {
           </h1>
           <FadeIn delay={0.5}>
             <p className="mt-8 max-w-xl font-serif text-lg leading-relaxed text-muted-foreground">
-              Agen Telur Tawang memasok telur ayam grade A pilihan untuk rumah tangga, warung, dan resto di sekitar Tawang, Mojokrapak dan sekitarnya. Dikemas hari yang sama, diantar dalam 24 jam.
+              Agen Telur Tawang Gurt memasok telur ayam grade A pilihan untuk rumah tangga, warung, dan resto di sekitar Tawang, Mojokrapak dan sekitarnya. Dikemas hari yang sama, diantar dalam 24 jam.
             </p>
           </FadeIn>
           <FadeIn delay={0.6}>

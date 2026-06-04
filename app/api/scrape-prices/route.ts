@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
 
 interface PriceItem {
   province: string;
@@ -32,7 +31,6 @@ const MARKET_MAPPING: Record<string, string> = {
   "Sidoarjo":  "sidoarjo",
 };
 
-
 function extractMarketPrices(priceData: SunEggPriceData) {
   const dateStr = priceData.price_date.split("T")[0]; // "YYYY-MM-DD"
   const rows: { market_id: string; price: number; recorded_date: string }[] = [];
@@ -54,12 +52,16 @@ function extractMarketPrices(priceData: SunEggPriceData) {
 }
 
 export async function GET() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+
   try {
     // 1. Fetch data from SunEgg public API
     const response = await fetch("https://sunegg.id/api/national-price", {
-      cache: "no-store", // Jangan gunakan cache agar data selalu ter-update
+      cache: "no-store",
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "Accept": "application/json",
       },
     });
 
@@ -81,12 +83,9 @@ export async function GET() {
     const { today_price, yesterday_price } = json.data;
     const rowsToUpsert: { market_id: string; price: number; recorded_date: string }[] = [];
 
-    // Extract prices from today
     if (today_price) {
       rowsToUpsert.push(...extractMarketPrices(today_price));
     }
-
-    // Extract prices from yesterday
     if (yesterday_price) {
       rowsToUpsert.push(...extractMarketPrices(yesterday_price));
     }
@@ -98,8 +97,8 @@ export async function GET() {
       );
     }
 
-    // 2. Save to Supabase (if configured)
-    if (!supabase) {
+    // 2. Cek apakah Supabase sudah dikonfigurasi
+    if (!supabaseUrl || !supabaseKey) {
       return NextResponse.json({
         success: true,
         demoMode: true,
@@ -108,14 +107,29 @@ export async function GET() {
       });
     }
 
-    const { error } = await supabase
-      .from("price_history")
-      .upsert(rowsToUpsert, { onConflict: "market_id,recorded_date" });
+    // 3. Upsert ke Supabase via REST API langsung (lebih reliable di Vercel serverless)
+    const restUrl = `${supabaseUrl}/rest/v1/price_history`;
 
-    if (error) {
-      console.error("Error upserting prices to Supabase:", error);
+    const upsertRes = await fetch(restUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": supabaseKey,
+        "Authorization": `Bearer ${supabaseKey}`,
+        "Prefer": "resolution=merge-duplicates",
+      },
+      body: JSON.stringify(rowsToUpsert),
+    });
+
+    if (!upsertRes.ok) {
+      const errText = await upsertRes.text();
+      console.error("Supabase REST upsert error:", upsertRes.status, errText);
       return NextResponse.json(
-        { success: false, error: `Supabase error: ${error.message}`, scrapedData: rowsToUpsert },
+        {
+          success: false,
+          error: `Supabase REST error ${upsertRes.status}: ${errText}`,
+          scrapedData: rowsToUpsert,
+        },
         { status: 500 }
       );
     }
@@ -126,6 +140,7 @@ export async function GET() {
       insertedCount: rowsToUpsert.length,
       data: rowsToUpsert,
     });
+
   } catch (error: any) {
     console.error("Scraping handler error:", error);
     return NextResponse.json(
