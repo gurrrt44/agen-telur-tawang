@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Header } from "@/components/sections/header";
 import { Footer } from "@/components/sections/footer";
 import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
 import { motion, AnimatePresence } from "motion/react";
-import { Upload, X, Sparkles, AlertCircle, Loader2 } from "lucide-react";
+import { Upload, X, Sparkles, AlertCircle, Loader2, Settings } from "lucide-react";
 import { toast } from "sonner";
 
 interface Photo {
@@ -127,7 +128,17 @@ export default function GalleryPage() {
             </p>
           </FadeIn>
           
-          <FadeIn delay={0.1} className="shrink-0">
+          <FadeIn delay={0.1} className="shrink-0 flex items-center gap-3">
+            <Link href="/galeri/admin">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 rounded-sm border border-border px-5 py-3 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+              >
+                <Settings className="size-4" /> Admin ACC
+              </motion.button>
+            </Link>
+
             <motion.button
               onClick={() => setModalOpen(true)}
               whileHover={{ scale: 1.03 }}
