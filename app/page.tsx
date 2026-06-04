@@ -16,7 +16,7 @@ export default function HomePage() {
   const [selectedBundle, setSelectedBundle] = useState("");
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-background text-foreground">
+    <div className="min-h-screen w-full bg-background text-foreground">
       <Toaster position="top-center" richColors />
       <Header />
       <Hero />
