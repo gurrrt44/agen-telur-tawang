@@ -1,28 +1,38 @@
-import { createClient } from "@supabase/supabase-js";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: Request) {
-    // Verifikasi request dari Vercel Cron (keamanan)
-    const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+export async function GET(request: NextRequest) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || "";
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() || "";
 
-    try {
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        );
+  if (!supabaseUrl || !supabaseKey) {
+    return NextResponse.json({ ok: false, error: "Supabase not configured" }, { status: 500 });
+  }
 
-        // Query ringan — cukup untuk jaga Supabase tetap aktif
-        const { error } = await supabase.from("messages").select("id").limit(1);
+  const results: Record<string, unknown> = { pinged_at: new Date().toISOString() };
 
-        if (error) throw error;
+  try {
+    // 1. Ping Supabase agar tidak pause (query ringan)
+    const pingRes = await fetch(`${supabaseUrl}/rest/v1/price_history?limit=1&select=market_id`, {
+      headers: {
+        "apikey": supabaseKey,
+        "Authorization": `Bearer ${supabaseKey}`,
+        "Accept": "application/json",
+      },
+      cache: "no-store",
+    });
+    results.supabase_ping = pingRes.ok ? "ok" : `error ${pingRes.status}`;
 
-        console.log("✅ Supabase ping berhasil:", new Date().toISOString());
-        return NextResponse.json({ ok: true, pinged_at: new Date().toISOString() });
-    } catch (err) {
-        console.error("❌ Ping gagal:", err);
-        return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
-    }
+    // 2. Auto-sync harga terbaru dari SunEgg ke Supabase
+    const protocol = request.nextUrl.protocol;
+    const host = request.nextUrl.host;
+    const scrapeRes = await fetch(`${protocol}//${host}/api/scrape-prices`, { cache: "no-store" });
+    const scrapeData = await scrapeRes.json();
+    results.scrape_success = scrapeData.success;
+    results.scrape_message = scrapeData.message || scrapeData.error;
+    results.inserted_count = scrapeData.insertedCount;
+
+    return NextResponse.json({ ok: true, ...results });
+  } catch (err: any) {
+    return NextResponse.json({ ok: false, error: err.message, ...results }, { status: 500 });
+  }
 }
