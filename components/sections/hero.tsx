@@ -57,7 +57,7 @@ export function Hero() {
           </h1>
           <FadeIn delay={0.5}>
             <p className="mt-8 max-w-xl font-serif text-lg leading-relaxed text-muted-foreground">
-              Agen Telur Tawang Gurt memasok telur ayam grade A pilihan untuk rumah tangga, warung, dan resto di sekitar Tawang, Mojokrapak dan sekitarnya. Dikemas hari yang sama, diantar dalam 24 jam.
+              "Agen Telur Tawang" memasok telur ayam grade A pilihan untuk rumah tangga, warung, dan resto di sekitar Tawang, Mojokrapak dan sekitarnya. Dikemas hari yang sama, diantar dalam 24 jam.
             </p>
           </FadeIn>
           <FadeIn delay={0.6}>
@@ -96,7 +96,7 @@ export function Hero() {
               className="aspect-[4/5] w-full overflow-hidden bg-secondary"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://images.unsplash.com/photo-1569288063643-5d29ad64df09?w=900&h=1125&fit=crop&auto=format" alt="Tray telur ayam coklat segar" className="size-full object-cover transition duration-700 hover:scale-110" />
+              <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEyP5OairPaDJ_NC2QW_r2U5lN62wtmp6CMKhm9pzb7uMyzOPjI4cne664p-vcOX4USUgJZhWNjoCcLpfjFXCw3aNytsI-PJ0xaNftcX668u1xSPUeiPwGGJFgQqj1TIPU77DWE=w900-h1125-k-no" alt="Agen Telur Tawang - foto toko" className="size-full object-cover transition duration-700 hover:scale-110" />
             </motion.div>
             <motion.div
               animate={{ rotate: 360 }}
