@@ -54,7 +54,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
             <h2 className="font-serif text-4xl leading-tight md:text-5xl">
               Isi form, lalu kami konfirmasi harga & ketersediaan.
             </h2>
-            <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-5 text-base leading-relaxed text-muted-foreground font-medium">
               Harga telur mengikuti kondisi pasar harian dan kebijakan toko. Setelah form dikirim via WhatsApp, kami akan segera membalas dengan konfirmasi harga dan estimasi pengiriman.
             </p>
             <div className="mt-8 space-y-4 border border-border bg-card p-6">
@@ -65,10 +65,10 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                 { n: "04", t: "Telur diantar", d: "Segar, dikemas rapi, tepat waktu" },
               ].map((s) => (
                 <div key={s.n} className="flex items-start gap-4">
-                  <span className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">{s.n}</span>
+                  <span className="mt-0.5 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-accent">{s.n}</span>
                   <div>
-                    <div className="font-serif text-base">{s.t}</div>
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{s.d}</div>
+                    <div className="font-serif text-lg font-semibold">{s.t}</div>
+                    <div className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">{s.d}</div>
                   </div>
                 </div>
               ))}
@@ -80,7 +80,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
             <form onSubmit={handleSubmit} className="space-y-5 border border-border bg-card p-7">
               {/* Nama */}
               <label className="block">
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Nama lengkap *</span>
+                <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Nama lengkap *</span>
                 <input
                   required
                   value={form.nama}
@@ -92,7 +92,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
 
               {/* Pilih paket */}
               <div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Paket yang diminati</span>
+                <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Paket yang diminati</span>
                 <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
                   {BUNDLES.map((b) => (
                     <motion.button
@@ -106,8 +106,8 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                           : "border-border hover:bg-secondary"
                       }`}
                     >
-                      <span className="font-serif text-sm">{b.name}</span>
-                      <span className={`font-mono text-[9px] uppercase tracking-[0.14em] ${selectedBundle === b.id ? "text-background/70" : "text-muted-foreground"}`}>
+                      <span className="font-serif text-sm font-semibold">{b.name}</span>
+                      <span className={`font-mono text-[10px] font-medium uppercase tracking-[0.14em] ${selectedBundle === b.id ? "text-background/70" : "text-muted-foreground"}`}>
                         {b.weight}
                       </span>
                     </motion.button>
@@ -117,7 +117,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
 
               {/* Metode */}
               <div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Metode pengiriman</span>
+                <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Metode pengiriman</span>
                 <div className="mt-3 grid grid-cols-2 gap-3">
                   {[
                     { k: "antar", t: "Antar ke alamat", s: "Gratis ≥ Rp 50.000" },
@@ -132,8 +132,8 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                         form.metode === m.k ? "border-foreground bg-foreground text-background" : "border-border hover:bg-secondary"
                       }`}
                     >
-                      <span className="font-serif text-base">{m.t}</span>
-                      <span className={`font-mono text-[10px] uppercase tracking-[0.18em] ${form.metode === m.k ? "text-background/70" : "text-muted-foreground"}`}>
+                      <span className="font-serif text-base font-semibold">{m.t}</span>
+                      <span className={`font-mono text-[11px] font-medium uppercase tracking-[0.18em] ${form.metode === m.k ? "text-background/70" : "text-muted-foreground"}`}>
                         {m.s}
                       </span>
                       {form.metode === m.k && <motion.span layoutId="method-mark" className="absolute right-3 top-3 size-2 rounded-full bg-accent" />}
@@ -145,7 +145,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
               {/* Alamat (jika antar) */}
               {form.metode === "antar" && (
                 <label className="block">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Alamat pengantaran</span>
+                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Alamat pengantaran</span>
                   <input
                     value={form.alamat}
                     onChange={(e) => setForm({ ...form, alamat: e.target.value })}
@@ -157,7 +157,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
 
               {/* Catatan */}
               <label className="block">
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Catatan (opsional)</span>
+                <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Catatan (opsional)</span>
                 <textarea
                   value={form.catatan}
                   onChange={(e) => setForm({ ...form, catatan: e.target.value })}
@@ -172,7 +172,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                 type="submit"
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative inline-flex w-full items-center justify-between overflow-hidden rounded-sm bg-[#25D366] px-6 py-4 font-mono text-xs uppercase tracking-[0.18em] text-white"
+                className="group relative inline-flex w-full items-center justify-between overflow-hidden rounded-sm bg-[#25D366] px-6 py-4 font-mono text-sm font-bold uppercase tracking-[0.16em] text-white"
               >
                 <span className="absolute inset-0 -translate-x-full bg-[#1fb855] transition-transform duration-500 group-hover:translate-x-0" />
                 <span className="relative z-10 flex items-center gap-2">
@@ -184,7 +184,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                 <ArrowUpRight className="relative z-10 size-4" />
               </motion.button>
 
-              <p className="text-center font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              <p className="text-center font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
                 Harga dikonfirmasi langsung oleh toko · Bayar setelah konfirmasi
               </p>
             </form>

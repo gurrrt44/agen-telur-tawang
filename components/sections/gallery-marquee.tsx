@@ -84,7 +84,7 @@ export function GalleryMarquee() {
             </h2>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground flex items-center gap-1.5">
+            <p className="font-mono text-sm font-medium uppercase tracking-[0.16em] text-muted-foreground flex items-center gap-1.5">
               <MessageSquare className="size-3.5 text-accent" />
               Punya foto testimoni? Unggah di halaman galeri!
             </p>
@@ -127,7 +127,7 @@ export function GalleryMarquee() {
               {/* Overlay Glassmorphism */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100 flex flex-col justify-end p-5">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-accent">
+                  <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
                     <Sparkles className="size-3" />
                     <span>Kiriman · {photo.submitter_name}</span>
                   </div>
@@ -138,7 +138,7 @@ export function GalleryMarquee() {
                   )}
                 </div>
                 {photo.caption && (
-                  <p className="mt-2 font-serif text-sm leading-relaxed text-slate-100 line-clamp-2">
+                  <p className="mt-2 font-serif text-sm leading-relaxed text-slate-100 line-clamp-2 font-medium">
                     "{photo.caption}"
                   </p>
                 )}

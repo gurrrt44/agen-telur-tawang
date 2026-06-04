@@ -28,7 +28,7 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
             </h2>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
+            <p className="font-mono text-sm font-medium uppercase tracking-[0.16em] text-muted-foreground">
               Harga ditentukan toko · Chat WA untuk konfirmasi
             </p>
           </FadeIn>
@@ -45,7 +45,7 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
               whileHover={{ scale: 1.02, y: -5, transition: { type: "spring", stiffness: 250, damping: 16 } }}
             >
               <CursorGlowCard className="flex h-full flex-col border border-border bg-card p-7 transition hover:border-foreground/40">
-                <div className="flex items-start justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                <div className="flex items-start justify-between font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                   <span>No. {String(i + 1).padStart(2, "0")}</span>
                   <motion.span
                     whileHover={{ scale: 1.08, rotate: -2 }}
@@ -55,17 +55,17 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
                   </motion.span>
                 </div>
 
-                <h3 className="mt-5 font-serif text-2xl">{b.name}</h3>
-                <div className="mt-1 font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                <h3 className="mt-5 font-serif text-2xl font-semibold">{b.name}</h3>
+                <div className="mt-1 font-mono text-sm font-medium uppercase tracking-[0.16em] text-muted-foreground">
                   {b.weight} • {b.count}
                 </div>
 
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">{b.note}</p>
+                <p className="mt-4 flex-1 text-base leading-relaxed text-muted-foreground font-medium">{b.note}</p>
 
                 {/* Harga: hubungi toko */}
                 <div className="mt-6 border-t border-border pt-5">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Harga</div>
-                  <div className="mt-1 font-serif text-lg text-muted-foreground italic">Hubungi toko untuk harga terkini</div>
+                  <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Harga</div>
+                  <div className="mt-1 font-serif text-lg text-muted-foreground italic font-medium">Hubungi toko untuk harga terkini</div>
                 </div>
 
                 {/* Tombol ke Form */}
@@ -73,7 +73,7 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
                   onClick={() => handlePesan(b.id)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  className="mt-5 inline-flex w-full items-center justify-between rounded-sm bg-foreground px-4 py-3 font-mono text-xs uppercase tracking-[0.18em] text-background"
+                  className="mt-5 inline-flex w-full items-center justify-between rounded-sm bg-accent px-5 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-foreground shadow-sm hover:shadow-md"
                 >
                   Pesan paket ini
                   <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>

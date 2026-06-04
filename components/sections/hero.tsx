@@ -56,16 +56,16 @@ export function Hero() {
             ))}
           </h1>
           <FadeIn delay={0.5}>
-            <p className="mt-8 max-w-xl font-serif text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-8 max-w-xl font-serif text-xl leading-relaxed text-muted-foreground font-medium">
               "Agen Telur Tawang" memasok telur ayam grade A pilihan untuk rumah tangga, warung, dan resto di sekitar Tawang, Mojokrapak dan sekitarnya. Dikemas hari yang sama, diantar dalam 24 jam.
             </p>
           </FadeIn>
           <FadeIn delay={0.6}>
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <motion.a href="#paket" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center gap-2 rounded-sm bg-foreground px-6 py-3 font-mono text-xs uppercase tracking-[0.18em] text-background">
-                Lihat Paket <ArrowUpRight className="size-3.5" />
+              <motion.a href="#paket" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center gap-2 rounded-sm bg-accent px-7 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-foreground shadow-md hover:shadow-lg">
+                Lihat Paket <ArrowUpRight className="size-4" />
               </motion.a>
-              <motion.a href="#harga" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center gap-2 rounded-sm border border-border px-6 py-3 font-mono text-xs uppercase tracking-[0.18em] hover:bg-secondary">
+              <motion.a href="#harga" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center gap-2 rounded-sm border-2 border-foreground/30 px-7 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] hover:bg-secondary">
                 Harga Hari Ini
               </motion.a>
             </div>
@@ -75,8 +75,8 @@ export function Hero() {
             <dl className="mt-14 grid max-w-2xl grid-cols-3 gap-4 sm:gap-8 border-t border-border pt-8">
               {[{ k: "Peternak Mitra", v: "17" }, { k: "Butir / Hari", v: "8.400" }, { k: "Pelanggan Aktif", v: "312" }].map((s, i) => (
                 <motion.div key={s.k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ delay: 0.1 * i, duration: 0.6 }}>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{s.k}</dt>
-                  <dd className="mt-2 font-serif text-3xl">{s.v}</dd>
+                  <dt className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{s.k}</dt>
+                  <dd className="mt-2 font-serif text-3xl font-semibold">{s.v}</dd>
                 </motion.div>
               ))}
             </dl>
@@ -116,8 +116,8 @@ export function Hero() {
       </div>
 
       {/* Marquee */}
-      <div className="overflow-hidden border-t border-border bg-foreground py-3 text-background">
-        <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} className="flex w-max gap-12 font-mono text-xs uppercase tracking-[0.3em]">
+      <div className="overflow-hidden border-t border-border bg-foreground py-3.5 text-background">
+        <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} className="flex w-max gap-12 font-mono text-sm font-bold uppercase tracking-[0.25em]">
           {Array.from({ length: 12 }).map((_, i) => (
             <span key={i} className="flex items-center gap-12">
               Telur Segar Tiap Pagi

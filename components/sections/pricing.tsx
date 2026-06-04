@@ -152,7 +152,7 @@ export function Pricing() {
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               className="size-1.5 rounded-full bg-accent"
             />
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-foreground">
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground">
               Harga diperbarui otomatis setiap hari pukul 10:00 WIB · Sumber: SunEgg.id
             </span>
           </div>
@@ -161,14 +161,14 @@ export function Pricing() {
         {/* Market selector */}
         <FadeIn delay={0.1}>
           <div className="mt-10 flex flex-wrap items-center gap-2">
-            <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Pilih pasar:</span>
+            <span className="mr-2 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Pilih pasar:</span>
             {MARKETS.map((m) => (
               <motion.button
                 key={m.id}
                 onClick={() => setMarketId(m.id)}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className={`relative rounded-sm border px-4 py-2 font-mono text-xs uppercase tracking-[0.16em] transition ${marketId === m.id ? "border-foreground bg-foreground text-background" : "border-border hover:bg-secondary"}`}
+                className={`relative rounded-sm border px-4 py-2.5 font-mono text-sm font-semibold uppercase tracking-[0.14em] transition ${marketId === m.id ? "border-accent bg-accent text-foreground shadow-md" : "border-border hover:bg-secondary"}`}
               >
                 {m.name} · {m.city}
                 {marketId === m.id && (
@@ -183,14 +183,14 @@ export function Pricing() {
           {/* Live price card */}
           <FadeIn delay={0.15} className="lg:col-span-4">
             <CursorGlowCard className="border border-border bg-card p-7">
-              <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              <div className="flex items-center justify-between font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                 <span>Real-time · {market.name}</span>
                 <span className="inline-flex items-center gap-1.5">
                   <motion.span animate={{ scale: [1, 1.6, 1], opacity: [1, 0.3, 1] }} transition={{ duration: 1.4, repeat: Infinity }} className="size-1.5 rounded-full bg-accent" />
                   Live
                 </span>
               </div>
-              <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              <div className="mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
                 Lokasi · {market.city} · {market.coord}
               </div>
 
@@ -203,8 +203,8 @@ export function Pricing() {
                 {trend >= 0 ? "+" : ""}{trend} ({pct.toFixed(2)}%) dari harga sebelumnya
               </div>
 
-              <div className="mt-4 rounded-md border border-border/50 bg-secondary/40 p-3 text-[11px] text-muted-foreground leading-relaxed">
-                <span className="font-semibold text-foreground">💡 Info Prediksi:</span> Nilai prediksi besok dihitung dengan melihat selisih kenaikan/penurunan harga hari ini vs kemarin, ditambah faktor momentum +10% untuk membaca arah pasar jangka pendek.
+              <div className="mt-4 rounded-md border border-accent/30 bg-accent/10 p-4 text-sm text-foreground leading-relaxed font-medium">
+                <span className="font-bold text-accent">💡 Info Prediksi:</span> Nilai prediksi besok dihitung dengan melihat selisih kenaikan/penurunan harga hari ini vs kemarin, ditambah faktor momentum +10% untuk membaca arah pasar jangka pendek.
               </div>
 
               <div className="mt-6 h-24">
@@ -246,7 +246,7 @@ export function Pricing() {
               <h2 className="font-serif text-3xl md:text-4xl">
                 Kemarin · <em className="italic text-accent">Kini</em> · Prediksi Besok
               </h2>
-              <p className="mt-3 max-w-xl text-sm text-muted-foreground">
+              <p className="mt-3 max-w-xl text-base text-muted-foreground font-medium">
                 Pergerakan harga {market.name.toLowerCase()} dari sore kemarin sampai prediksi besok pagi. Garis utuh adalah data aktual, garis putus-putus adalah prediksi.
               </p>
 
@@ -254,7 +254,7 @@ export function Pricing() {
               <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-px border border-border bg-border">
                 {/* Harga Kemarin */}
                 <div className="bg-card p-5">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Harga Kemarin</div>
+                  <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Harga Kemarin</div>
                   <div className="mt-2 font-serif text-2xl md:text-3xl text-muted-foreground">
                     <OdometerPrice value={yesterday} />
                   </div>
@@ -275,7 +275,7 @@ export function Pricing() {
                     animate={{ opacity: 0 }}
                     transition={{ duration: 0.8 }}
                   />
-                  <div className="relative flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  <div className="relative flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     <motion.span
                       animate={{ scale: [1, 1.7, 1], opacity: [1, 0.2, 1] }}
                       transition={{ duration: 1.4, repeat: Infinity }}
@@ -302,7 +302,7 @@ export function Pricing() {
                     animate={{ backgroundPositionX: ["0px", "24px"] }}
                     transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                   />
-                  <div className="relative flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  <div className="relative flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     <motion.span
                       animate={{ opacity: [1, 0, 1] }}
                       transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}

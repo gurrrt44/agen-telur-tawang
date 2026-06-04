@@ -62,15 +62,15 @@ export function Header() {
             <Egg className="size-4" strokeWidth={1.5} />
           </motion.div>
           <div className="leading-tight">
-            <div className="font-serif text-lg">Agen Telur Tawang</div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground hidden sm:block">
+            <div className="font-serif text-xl font-semibold">Agen Telur Tawang</div>
+            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground hidden sm:block font-medium">
               est. 2008 — Mojokrapak, Jombang, Jawa Timur
             </div>
           </div>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-7 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground md:flex">
+        <nav className="hidden items-center gap-7 font-mono text-sm uppercase tracking-[0.16em] text-muted-foreground md:flex font-medium">
           {navLinks.map((link) => {
             const isActive = link.key === "galeri"
               ? pathname.startsWith("/galeri")
@@ -99,9 +99,9 @@ export function Header() {
             href={pathname === "/" ? "#pesan" : "/#pesan"}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            className="hidden items-center gap-2 rounded-sm bg-foreground px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-background md:inline-flex"
+            className="hidden items-center gap-2 rounded-sm bg-accent px-5 py-2.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-foreground md:inline-flex shadow-sm hover:shadow-md"
           >
-            Pesan <ArrowUpRight className="size-3.5" />
+            Pesan <ArrowUpRight className="size-4" />
           </motion.a>
 
           {/* Mobile Hamburger Button */}
@@ -125,7 +125,7 @@ export function Header() {
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="border-b border-border bg-background md:hidden overflow-hidden"
           >
-            <div className="flex flex-col gap-5 px-6 py-6 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+            <div className="flex flex-col gap-5 px-6 py-6 font-mono text-sm uppercase tracking-[0.16em] text-muted-foreground font-medium">
               {navLinks.map((link, idx) => {
                 const isActive = link.key === "galeri"
                   ? pathname.startsWith("/galeri")
@@ -154,9 +154,9 @@ export function Header() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: navLinks.length * 0.05 }}
-                className="mt-2 inline-flex items-center justify-center gap-2 rounded-sm bg-foreground py-3 font-mono text-xs uppercase tracking-[0.18em] text-background"
+                className="mt-2 inline-flex items-center justify-center gap-2 rounded-sm bg-accent py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-foreground shadow-sm"
               >
-                Pesan <ArrowUpRight className="size-3.5" />
+                Pesan <ArrowUpRight className="size-4" />
               </motion.a>
             </div>
           </motion.div>

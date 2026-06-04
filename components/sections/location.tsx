@@ -28,8 +28,8 @@ export function Location() {
                   <motion.div key={row.k} initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false }} transition={{ delay: 0.1 * i }} className="flex items-start gap-4">
                     <row.I className="mt-1 size-5 text-accent" strokeWidth={1.5} />
                     <div>
-                      <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-background/60">{row.k}</dt>
-                      <dd className="mt-1 font-serif text-lg leading-snug">{row.v}</dd>
+                      <dt className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-background/60">{row.k}</dt>
+                      <dd className="mt-1 font-serif text-xl leading-snug font-medium">{row.v}</dd>
                     </div>
                   </motion.div>
                 ))}
@@ -41,9 +41,9 @@ export function Location() {
                 rel="noreferrer"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                className="mt-10 inline-flex items-center gap-2 rounded-sm border border-background/30 px-6 py-3 font-mono text-xs uppercase tracking-[0.18em] hover:bg-background hover:text-foreground"
+                className="mt-10 inline-flex items-center gap-2 rounded-sm bg-accent px-7 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-foreground shadow-md hover:shadow-lg"
               >
-                Buka di Google Maps <ArrowUpRight className="size-3.5" />
+                Buka di Google Maps <ArrowUpRight className="size-4" />
               </motion.a>
             </div>
           </FadeIn>
@@ -59,7 +59,7 @@ export function Location() {
                   loading="lazy"
                 />
               </motion.div>
-              <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-background/60">
+              <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-background/60">
                 <span>Peta — Tawang, Mojokrapak, Jombang</span>
                 <span>−7.6121° S · 112.3426° E</span>
               </div>

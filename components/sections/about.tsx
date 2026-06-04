@@ -29,8 +29,8 @@ export function About() {
                   <motion.div whileHover={{ rotate: 12, scale: 1.15 }} transition={{ type: "spring", stiffness: 300 }}>
                     <f.icon className="size-5 text-accent" strokeWidth={1.5} />
                   </motion.div>
-                  <h3 className="mt-5 font-serif text-xl">{f.t}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.d}</p>
+                  <h3 className="mt-5 font-serif text-xl font-semibold">{f.t}</h3>
+                  <p className="mt-2 text-base leading-relaxed text-muted-foreground font-medium">{f.d}</p>
                 </motion.div>
               </CursorGlowCard>
             ))}
@@ -41,9 +41,9 @@ export function About() {
           <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden border border-border bg-border md:grid-cols-3">
             {[{ k: "Protein", v: "6,3 g", s: "per butir 50 g" }, { k: "Kolesterol", v: "186 mg", s: "—" }, { k: "Umur simpan", v: "21 hari", s: "suhu ruang" }].map((s) => (
               <CursorGlowCard key={s.k} className="bg-background p-7">
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{s.k}</div>
-                <div className="mt-3 font-serif text-4xl">{s.v}</div>
-                <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{s.s}</div>
+                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{s.k}</div>
+                <div className="mt-3 font-serif text-4xl font-semibold">{s.v}</div>
+                <div className="mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">{s.s}</div>
               </CursorGlowCard>
             ))}
           </div>
