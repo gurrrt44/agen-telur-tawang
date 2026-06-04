@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Egg, ArrowUpRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -103,6 +104,8 @@ export function Header() {
           >
             Pesan <ArrowUpRight className="size-4" />
           </motion.a>
+
+          <ThemeToggle />
 
           {/* Mobile Hamburger Button */}
           <button

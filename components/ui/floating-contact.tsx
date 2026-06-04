@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { MessageCircle, X } from "lucide-react";
-import { ThemeToggle } from "./theme-toggle";
 
 export function FloatingContact() {
   const [open, setOpen] = useState(false);
@@ -54,9 +53,6 @@ export function FloatingContact() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Animated Theme Toggle */}
-      <ThemeToggle />
 
       {/* FAB button */}
       <motion.button
