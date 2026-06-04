@@ -1,13 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Egg, ArrowUpRight, Menu, X } from "lucide-react";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   const navLinks = ["Tentang", "Harga", "Paket", "Pesan", "Lokasi"];
+
+  useEffect(() => {
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, {
+      rootMargin: "-45% 0px -50% 0px", // Trigger when section is in the middle of the viewport
+      threshold: 0.05,
+    });
+
+    const sections = ["tentang", "harga", "paket", "pesan", "lokasi"];
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <motion.header
@@ -35,12 +59,23 @@ export function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-7 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground md:flex">
-          {navLinks.map((l) => (
-            <a key={l} href={`#${l.toLowerCase()}`} className="group relative">
-              <span className="transition group-hover:text-foreground">{l}</span>
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-accent transition-all duration-300 group-hover:w-full" />
-            </a>
-          ))}
+          {navLinks.map((l) => {
+            const isActive = activeSection === l.toLowerCase();
+            return (
+              <a key={l} href={`#${l.toLowerCase()}`} className="group relative py-1">
+                <span className={`transition ${isActive ? "text-foreground font-semibold" : "group-hover:text-foreground"}`}>
+                  {l}
+                </span>
+                {isActive && (
+                  <motion.span
+                    layoutId="active-nav-line"
+                    className="absolute -bottom-1 left-0 h-px w-full bg-accent"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-4">
@@ -76,19 +111,22 @@ export function Header() {
             className="border-b border-border bg-background md:hidden overflow-hidden"
           >
             <div className="flex flex-col gap-5 px-6 py-6 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              {navLinks.map((l, idx) => (
-                <motion.a
-                  key={l}
-                  href={`#${l.toLowerCase()}`}
-                  onClick={() => setIsOpen(false)}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="py-1 transition hover:text-foreground"
-                >
-                  {l}
-                </motion.a>
-              ))}
+              {navLinks.map((l, idx) => {
+                const isActive = activeSection === l.toLowerCase();
+                return (
+                  <motion.a
+                    key={l}
+                    href={`#${l.toLowerCase()}`}
+                    onClick={() => setIsOpen(false)}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className={`py-1 transition ${isActive ? "text-foreground font-semibold pl-2 border-l-2 border-accent" : "hover:text-foreground"}`}
+                  >
+                    {l}
+                  </motion.a>
+                );
+              })}
               <motion.a
                 href="#pesan"
                 onClick={() => setIsOpen(false)}
