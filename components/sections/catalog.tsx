@@ -40,7 +40,7 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
               key={b.id}
               initial={{ opacity: 0, scale: 0.95, y: 24 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
+              viewport={{ once: false, margin: "-40px" }}
               transition={{ delay: i * 0.05, type: "spring", stiffness: 150, damping: 15 }}
               whileHover={{ scale: 1.02, y: -5, transition: { type: "spring", stiffness: 250, damping: 16 } }}
             >
