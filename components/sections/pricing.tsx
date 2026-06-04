@@ -14,11 +14,9 @@ import { FadeIn } from "@/components/ui/fade-in";
 import { CursorGlowCard } from "@/components/ui/cursor-glow-card";
 import { OdometerPrice } from "@/components/ui/odometer-price";
 
-interface PricingProps {
-  onPriceChange?: (price: number) => void;
-}
 
-export function Pricing({ onPriceChange }: PricingProps) {
+
+export function Pricing() {
   const [marketId, setMarketId] = useState("jombang");
 
   const market = MARKETS.find((m) => m.id === marketId)!;
@@ -29,11 +27,7 @@ export function Pricing({ onPriceChange }: PricingProps) {
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
 
-  useEffect(() => {
-    if (onPriceChange) {
-      onPriceChange(livePrice);
-    }
-  }, [livePrice, onPriceChange]);
+
 
   // Fetch prices from DB/API
   const fetchPrices = async (targetMarketId: string) => {
