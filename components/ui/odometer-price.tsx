@@ -29,7 +29,7 @@ export function OdometerPrice({ value }: { value: number }) {
   const digitCount = chars.filter((c) => /\d/.test(c)).length;
   let di = 0;
   return (
-    <span className="inline-flex items-baseline">
+    <span className="inline-flex items-baseline whitespace-nowrap">
       <span>Rp&nbsp;</span>
       {chars.map((char, i) => {
         if (!/\d/.test(char)) return <span key={i}>{char}</span>;

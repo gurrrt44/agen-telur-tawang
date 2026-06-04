@@ -59,7 +59,7 @@ export function Location() {
                   loading="lazy"
                 />
               </motion.div>
-              <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-background/60">
+              <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-background/60">
                 <span>Peta — Tawang, Mojokrapak, Jombang</span>
                 <span>−7.6121° S · 112.3426° E</span>
               </div>

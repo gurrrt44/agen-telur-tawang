@@ -251,7 +251,7 @@ export function Pricing() {
               </p>
 
               {/* Three big stats */}
-              <div className="mt-6 grid grid-cols-3 gap-px border border-border bg-border">
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-px border border-border bg-border">
                 {/* Harga Kemarin */}
                 <div className="bg-card p-5">
                   <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Harga Kemarin</div>
@@ -317,7 +317,7 @@ export function Pricing() {
                 </div>
               </div>
 
-              <div className="mt-6 border border-border bg-card p-5">
+              <div className="mt-6 border border-border bg-card p-5 w-full min-w-0 overflow-hidden">
                 <div className="mb-4 flex flex-wrap items-center gap-5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                   <span className="inline-flex items-center gap-2"><span className="h-px w-5 bg-foreground" /> Aktual</span>
                   <span className="inline-flex items-center gap-2"><span className="h-px w-5 border-t border-dashed border-accent" /> Prediksi</span>
@@ -339,7 +339,7 @@ export function Pricing() {
                     transform-origin: center;
                   }
                 `}</style>
-                <div className="relative h-80 md:h-96" ref={chartRef}>
+                <div className="relative h-80 md:h-96 w-full min-w-0" ref={chartRef}>
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={dailySeries} margin={{ top: 24, right: 20, left: 0, bottom: 4 }}>
                       <CartesianGrid stroke="rgba(0,0,0,0.06)" vertical={false} />
