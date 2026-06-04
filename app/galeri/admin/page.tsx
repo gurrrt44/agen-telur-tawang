@@ -308,7 +308,7 @@ export default function GalleryAdminPage() {
               <div>
                 <h1 className="font-serif text-4xl font-medium">Dashboard Moderasi Foto</h1>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Gunakan halaman ini untuk menyetujui, menolak, atau menghapus kiriman foto testimoni pelanggan.
+                  Foto yang dikirim pengunjung disimpan sementara sampai disetujui. Tekan <strong>Setujui</strong> untuk memindahkannya ke galeri, atau <strong>Tolak</strong> untuk menghapusnya selamanya.
                 </p>
               </div>
               <button
@@ -473,13 +473,17 @@ export default function GalleryAdminPage() {
                                 <Edit3 className="size-4 text-accent" /> Edit
                               </button>
 
-                              {/* Tombol Hapus */}
+                              {/* Tombol Tolak/Hapus */}
                               <button
                                 onClick={() => handleDelete(photo.id)}
-                                className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] text-destructive hover:bg-destructive/10 px-3 py-1.5 rounded-sm transition"
-                                title="Hapus foto"
+                                className={`inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.14em] px-3 py-1.5 rounded-sm transition ${
+                                  !photo.approved
+                                    ? "text-destructive hover:bg-destructive/10"
+                                    : "text-destructive hover:bg-destructive/10"
+                                }`}
+                                title={photo.approved ? "Hapus foto" : "Tolak & hapus foto"}
                               >
-                                <Trash2 className="size-4" /> Hapus
+                                <Trash2 className="size-4" /> {photo.approved ? "Hapus" : "Tolak"}
                               </button>
                             </div>
 
