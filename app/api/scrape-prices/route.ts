@@ -108,7 +108,7 @@ export async function GET() {
     }
 
     // 3. Upsert ke Supabase via REST API langsung (lebih reliable di Vercel serverless)
-    const restUrl = `${supabaseUrl}/rest/v1/price_history`;
+    const restUrl = `${supabaseUrl}/rest/v1/price_history?on_conflict=market_id,recorded_date`;
 
     const upsertRes = await fetch(restUrl, {
       method: "POST",

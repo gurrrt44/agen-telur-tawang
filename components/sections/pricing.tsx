@@ -6,8 +6,7 @@ import {
   LineChart, Line, AreaChart, Area, XAxis, YAxis, Tooltip,
   ResponsiveContainer, ReferenceLine, CartesianGrid,
 } from "recharts";
-import { ArrowUpRight, ArrowDownRight, RefreshCw } from "lucide-react";
-import { toast } from "sonner";
+import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { MARKETS, formatRp } from "@/lib/data";
 import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
@@ -25,7 +24,6 @@ export function Pricing() {
   const [animKey, setAnimKey] = useState(0);
   const [chartData, setChartData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [syncing, setSyncing] = useState(false);
 
 
 
@@ -54,28 +52,6 @@ export function Pricing() {
     fetchPrices(marketId);
     setAnimKey((k) => k + 1);
   }, [marketId]);
-
-  // Handle manual scraping/syncing
-
-  const handleSync = async () => {
-    setSyncing(true);
-    const toastId = toast.loading("Mensinkronkan data harga telur ayam dari Sun Egg...");
-    try {
-      const res = await fetch("/api/scrape-prices", { cache: "no-store" });
-      const data = await res.json();
-      if (data.success) {
-        toast.success(data.message || "Sinkronisasi harga berhasil!", { id: toastId });
-        await fetchPrices(marketId);
-        setAnimKey((k) => k + 1);
-      } else {
-        toast.error(data.error || "Gagal menyelaraskan harga.", { id: toastId });
-      }
-    } catch (err) {
-      toast.error("Terjadi kesalahan saat sinkronisasi.", { id: toastId });
-    } finally {
-      setSyncing(false);
-    }
-  };
 
   // Yesterday price
   const yesterday = useMemo(() => {
@@ -172,36 +148,22 @@ export function Pricing() {
 
         {/* Market selector */}
         <FadeIn delay={0.1}>
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Pilih pasar:</span>
-              {MARKETS.map((m) => (
-                <motion.button
-                  key={m.id}
-                  onClick={() => setMarketId(m.id)}
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className={`relative rounded-sm border px-4 py-2 font-mono text-xs uppercase tracking-[0.16em] transition ${marketId === m.id ? "border-foreground bg-foreground text-background" : "border-border hover:bg-secondary"}`}
-                >
-                  {m.name} · {m.city}
-                  {marketId === m.id && (
-                    <motion.span layoutId="market-dot" className="absolute -right-1 -top-1 size-2 rounded-full bg-accent" />
-                  )}
-                </motion.button>
-              ))}
-            </div>
-
-            {/* Sync button */}
-            <motion.button
-              onClick={handleSync}
-              disabled={syncing}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-2 rounded-sm border border-accent/30 bg-accent/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.16em] text-accent transition hover:bg-accent/20 disabled:opacity-50"
-            >
-              <RefreshCw className={`size-3 ${syncing ? "animate-spin" : ""}`} />
-              {syncing ? "Mensinkronkan..." : "Sinkronkan Harga"}
-            </motion.button>
+          <div className="mt-10 flex flex-wrap items-center gap-2">
+            <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Pilih pasar:</span>
+            {MARKETS.map((m) => (
+              <motion.button
+                key={m.id}
+                onClick={() => setMarketId(m.id)}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className={`relative rounded-sm border px-4 py-2 font-mono text-xs uppercase tracking-[0.16em] transition ${marketId === m.id ? "border-foreground bg-foreground text-background" : "border-border hover:bg-secondary"}`}
+              >
+                {m.name} · {m.city}
+                {marketId === m.id && (
+                  <motion.span layoutId="market-dot" className="absolute -right-1 -top-1 size-2 rounded-full bg-accent" />
+                )}
+              </motion.button>
+            ))}
           </div>
         </FadeIn>
 
