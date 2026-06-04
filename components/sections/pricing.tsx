@@ -342,12 +342,12 @@ export function Pricing() {
                 <div className="relative h-80 md:h-96 w-full min-w-0" ref={chartRef}>
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={dailySeries} margin={{ top: 24, right: 20, left: 0, bottom: 4 }}>
-                      <CartesianGrid stroke="rgba(0,0,0,0.06)" vertical={false} />
-                      <XAxis dataKey="label" tick={{ fontSize: 10, fontFamily: "JetBrains Mono", fill: "#6b5f4a" }} axisLine={{ stroke: "rgba(0,0,0,0.15)" }} tickLine={false} interval={Math.max(0, Math.floor(dailySeries.length / 8) - 1)} angle={-35} textAnchor="end" height={40} />
-                      <YAxis tick={{ fontSize: 11, fontFamily: "JetBrains Mono", fill: "#6b5f4a" }} axisLine={false} tickLine={false} domain={["dataMin - 400", "dataMax + 400"]} tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`} width={44} />
-                      <Tooltip contentStyle={{ background: "#fbfaf6", border: "1px solid rgba(0,0,0,0.12)", borderRadius: 2, fontFamily: "JetBrains Mono", fontSize: 11 }} formatter={(v) => (v ? formatRp(Number(v)) : "—")} />
-                      <ReferenceLine x="Kini" stroke="#e8a838" strokeDasharray="2 3" label={{ value: "sekarang", position: "insideTopRight", fill: "#6b5f4a", fontSize: 10, fontFamily: "JetBrains Mono", offset: 10 }} />
-                      <Line key="line-v" type="monotone" dataKey="v" stroke="#1a1612" strokeWidth={2.5} dot={{ r: 3.5, fill: "#1a1612" }} activeDot={{ r: 6, strokeWidth: 2 }} connectNulls={false} isAnimationActive={false} />
+                      <CartesianGrid stroke="var(--border)" vertical={false} />
+                      <XAxis dataKey="label" tick={{ fontSize: 10, fontFamily: "JetBrains Mono", fill: "var(--muted-foreground)" }} axisLine={{ stroke: "var(--border)" }} tickLine={false} interval={Math.max(0, Math.floor(dailySeries.length / 8) - 1)} angle={-35} textAnchor="end" height={40} />
+                      <YAxis tick={{ fontSize: 11, fontFamily: "JetBrains Mono", fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} domain={["dataMin - 400", "dataMax + 400"]} tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`} width={44} />
+                      <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 2, fontFamily: "JetBrains Mono", fontSize: 11, color: "var(--foreground)" }} formatter={(v) => (v ? formatRp(Number(v)) : "—")} />
+                      <ReferenceLine x="Kini" stroke="#e8a838" strokeDasharray="2 3" label={{ value: "sekarang", position: "insideTopRight", fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "JetBrains Mono", offset: 10 }} />
+                      <Line key="line-v" type="monotone" dataKey="v" stroke="var(--foreground)" strokeWidth={2.5} dot={{ r: 3.5, fill: "var(--foreground)" }} activeDot={{ r: 6, strokeWidth: 2 }} connectNulls={false} isAnimationActive={false} />
                       <Line
                         key="line-f"
                         type="monotone"
@@ -368,7 +368,7 @@ export function Pricing() {
                               <g key={`fp-${index}`}>
                                 <circle className="besok-ring" cx={cx} cy={cy} r={6} fill="#e8a838" stroke="none" />
                                 <circle className="besok-ring-delay" cx={cx} cy={cy} r={6} fill="#e8a838" stroke="none" />
-                                <circle cx={cx} cy={cy} r={6} fill="#e8a838" stroke="#1a1612" strokeWidth={1.5} />
+                                <circle cx={cx} cy={cy} r={6} fill="#e8a838" stroke="var(--foreground)" strokeWidth={1.5} />
                               </g>
                             );
                           }

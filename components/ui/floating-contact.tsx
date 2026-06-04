@@ -1,11 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircle, X, Sun, Moon } from "lucide-react";
 
 export function FloatingContact() {
   const [open, setOpen] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains("dark");
+    setTheme(isDark ? "dark" : "light");
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+    localStorage.setItem("theme", nextTheme);
+    if (nextTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
@@ -53,6 +70,17 @@ export function FloatingContact() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Theme Toggle Button */}
+      <motion.button
+        onClick={toggleTheme}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.95 }}
+        className="flex size-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-lg transition hover:bg-secondary focus:outline-none"
+        aria-label="Toggle dark/light theme"
+      >
+        {theme === "light" ? <Moon className="size-5" /> : <Sun className="size-5 text-accent" />}
+      </motion.button>
 
       {/* FAB button */}
       <motion.button
