@@ -54,31 +54,73 @@ export async function GET(request: NextRequest) {
 
 // POST: Pengunjung mengunggah foto baru (pending)
 export async function POST(request: NextRequest) {
-  const { url, anonKey } = getSupabaseConfig();
+  const { url, adminKey } = getSupabaseConfig();
   if (!url) {
     return NextResponse.json({ success: false, error: "Supabase URL not configured" }, { status: 500 });
   }
 
   try {
-    const body = await request.json();
-    const { image_url, caption, submitter_name } = body;
+    const contentType = request.headers.get("content-type") || "";
+    let imageUrl = "";
+    let caption = "";
+    let submitterName = "";
 
-    if (!image_url) {
-      return NextResponse.json({ success: false, error: "Image URL is required" }, { status: 400 });
+    if (contentType.includes("multipart/form-data")) {
+      const formData = await request.formData();
+      const file = formData.get("file") as File | null;
+      caption = formData.get("caption") as string || "";
+      submitterName = formData.get("submitter_name") as string || "Anonim";
+
+      if (!file) {
+        return NextResponse.json({ success: false, error: "File gambar harus disertakan" }, { status: 400 });
+      }
+
+      // 1. Upload ke Supabase Storage menggunakan adminKey (service role) untuk menembus RLS
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+      const fileBuffer = Buffer.from(await file.arrayBuffer());
+
+      const uploadRes = await fetch(`${url}/storage/v1/object/gallery/${fileName}`, {
+        method: "POST",
+        headers: {
+          "apikey": adminKey,
+          "Authorization": `Bearer ${adminKey}`,
+          "Content-Type": file.type,
+        },
+        body: fileBuffer,
+      });
+
+      if (!uploadRes.ok) {
+        const uploadErr = await uploadRes.text();
+        return NextResponse.json({ success: false, error: `Gagal mengunggah file ke Storage: ${uploadErr}` }, { status: uploadRes.status });
+      }
+
+      imageUrl = `${url}/storage/v1/object/public/gallery/${fileName}`;
+    } else {
+      // Fallback ke JSON payload jika bukan multipart
+      const body = await request.json();
+      imageUrl = body.image_url;
+      caption = body.caption || "";
+      submitterName = body.submitter_name || "Anonim";
+
+      if (!imageUrl) {
+        return NextResponse.json({ success: false, error: "Image URL is required" }, { status: 400 });
+      }
     }
 
+    // 2. Simpan record data foto ke database menggunakan adminKey
     const res = await fetch(`${url}/rest/v1/gallery_photos`, {
       method: "POST",
       headers: {
-        "apikey": anonKey,
-        "Authorization": `Bearer ${anonKey}`,
+        "apikey": adminKey,
+        "Authorization": `Bearer ${adminKey}`,
         "Content-Type": "application/json",
         "Prefer": "return=representation",
       },
       body: JSON.stringify({
-        image_url,
-        caption: caption || "",
-        submitter_name: submitter_name || "Anonim",
+        image_url: imageUrl,
+        caption: caption,
+        submitter_name: submitterName,
         approved: false, // Selalu default ke false untuk persetujuan admin
       }),
     });

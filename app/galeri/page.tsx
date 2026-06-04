@@ -77,54 +77,20 @@ export default function GalleryPage() {
 
     setUploading(true);
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
-
-    if (!supabaseUrl || !supabaseKey) {
-      toast.error("Konfigurasi Supabase tidak ditemukan!");
-      setUploading(false);
-      return;
-    }
-
     try {
-      // 1. Upload ke Supabase Storage Bucket 'gallery'
-      const fileExt = selectedFile.name.split(".").pop();
-      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
-      
-      const uploadRes = await fetch(`${supabaseUrl}/storage/v1/object/gallery/${fileName}`, {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("caption", caption);
+      formData.append("submitter_name", submitterName || "Anonim");
+
+      const res = await fetch("/api/gallery/photos", {
         method: "POST",
-        headers: {
-          "apikey": supabaseKey,
-          "Authorization": `Bearer ${supabaseKey}`,
-          "Content-Type": selectedFile.type,
-        },
-        body: selectedFile,
+        body: formData,
       });
 
-      if (!uploadRes.ok) {
-        const uploadErr = await uploadRes.text();
-        throw new Error(`Gagal mengunggah file ke Storage: ${uploadErr}`);
-      }
-
-      // URL Publik file gambar di Supabase Storage
-      const imageUrl = `${supabaseUrl}/storage/v1/object/public/gallery/${fileName}`;
-
-      // 2. Simpan record data foto ke database via API internal
-      const dbRes = await fetch("/api/gallery/photos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          image_url: imageUrl,
-          caption: caption,
-          submitter_name: submitterName || "Anonim",
-        }),
-      });
-
-      const dbData = await dbRes.json();
-      if (!dbData.success) {
-        throw new Error(dbData.error || "Gagal menyimpan data foto ke database.");
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.error || "Gagal mengunggah foto.");
       }
 
       toast.success("Foto testimoni berhasil diunggah! Menunggu persetujuan admin untuk tampil.");
