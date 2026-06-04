@@ -152,7 +152,7 @@ export async function GET(request: NextRequest) {
     const todayStr = new Date().toISOString().split("T")[0];
     const yesterdayStr = new Date(Date.now() - 86400000).toISOString().split("T")[0];
 
-    const series = records.map((record) => {
+    const series: { label: string; v: number | null; f: number | null; date: string }[] = records.map((record) => {
       const isToday = record.recorded_date === todayStr;
       const isYesterday = record.recorded_date === yesterdayStr;
       let label = formatDateLabel(record.recorded_date);
@@ -161,7 +161,7 @@ export async function GET(request: NextRequest) {
 
       return {
         label,
-        v: record.price,
+        v: record.price as number | null,
         f: isToday ? record.price : null,
         date: record.recorded_date,
       };
