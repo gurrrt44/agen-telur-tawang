@@ -235,7 +235,7 @@ export function Pricing() {
                 <dt className="uppercase tracking-[0.16em] text-muted-foreground">Volume</dt>
                 <dd className="text-right">8.4k butir</dd>
                 <dt className="uppercase tracking-[0.16em] text-muted-foreground">Pembaruan</dt>
-                <dd className="text-right">{loading ? "loading..." : "tiap 3 dtk"}</dd>
+                <dd className="text-right">{loading ? "loading..." : "setiap hari"}</dd>
               </dl>
             </CursorGlowCard>
           </FadeIn>
