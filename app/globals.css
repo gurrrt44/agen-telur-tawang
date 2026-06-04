@@ -110,27 +110,55 @@
 
   html {
     font-size: var(--font-size);
-    transition: background-color 0.5s ease, color 0.4s ease;
-  }
-
-  /* Smooth theme transition for all elements */
-  html.dark,
-  html:not(.dark) {
-    transition: background-color 0.5s ease, color 0.4s ease;
-  }
-
-  html * {
-    transition: background-color 0.4s ease, color 0.3s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-  }
-
-  /* Exclude chart elements from transition to prevent animation jank */
-  svg, canvas, iframe, .recharts-wrapper * {
-    transition: none !important;
   }
 
   /* Better contrast for muted text — elderly readability */
   p, span, dd, dt, label {
     font-weight: 450;
+  }
+}
+
+/* ==========================================
+   VIEW TRANSITIONS — Circular Wipe Effect
+   (for browsers that support View Transitions API)
+   ========================================== */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  animation: circle-wipe-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* When switching from dark to light, reverse the stacking */
+html.dark::view-transition-old(root) {
+  z-index: 9999;
+  animation: none;
+}
+
+html.dark::view-transition-new(root) {
+  z-index: 1;
+  animation: none;
+}
+
+html:not(.dark)::view-transition-new(root) {
+  animation: circle-wipe-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes circle-wipe-in {
+  from {
+    clip-path: circle(0% at var(--toggle-x, 50%) var(--toggle-y, 50%));
+  }
+  to {
+    clip-path: circle(150% at var(--toggle-x, 50%) var(--toggle-y, 50%));
   }
 }
 
