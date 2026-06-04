@@ -190,7 +190,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-// DELETE: Admin menghapus foto
+// DELETE: Admin menghapus foto (database + storage)
 export async function DELETE(request: NextRequest) {
   const { url, adminKey } = getSupabaseConfig();
   if (!url) {
@@ -211,6 +211,45 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
+    // 1. Ambil data foto dulu untuk mendapatkan image_url
+    const getRes = await fetch(`${url}/rest/v1/gallery_photos?id=eq.${id}&select=id,image_url`, {
+      headers: {
+        "apikey": adminKey,
+        "Authorization": `Bearer ${adminKey}`,
+        "Accept": "application/json",
+      },
+    });
+
+    if (getRes.ok) {
+      const photos = await getRes.json();
+      const photo = photos?.[0];
+
+      // 2. Hapus file dari Supabase Storage jika image_url ada
+      if (photo?.image_url) {
+        // Ekstrak nama file dari URL storage
+        // Format: https://<project>.supabase.co/storage/v1/object/public/gallery/<filename>
+        const storagePrefix = `${url}/storage/v1/object/public/gallery/`;
+        if (photo.image_url.startsWith(storagePrefix)) {
+          const fileName = photo.image_url.replace(storagePrefix, "");
+
+          const deleteStorageRes = await fetch(`${url}/storage/v1/object/gallery/${fileName}`, {
+            method: "DELETE",
+            headers: {
+              "apikey": adminKey,
+              "Authorization": `Bearer ${adminKey}`,
+            },
+          });
+
+          if (!deleteStorageRes.ok) {
+            const storageErr = await deleteStorageRes.text();
+            console.error("Gagal hapus file dari storage:", storageErr);
+            // Lanjutkan hapus dari DB meski storage gagal
+          }
+        }
+      }
+    }
+
+    // 3. Hapus record dari database
     const res = await fetch(`${url}/rest/v1/gallery_photos?id=eq.${id}`, {
       method: "DELETE",
       headers: {
