@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Toaster } from "sonner";
 import { Header } from "@/components/sections/header";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
@@ -18,7 +17,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground">
-      <Toaster position="top-center" richColors />
       <Header />
       <Hero />
       <About />

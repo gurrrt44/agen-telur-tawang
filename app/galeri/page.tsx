@@ -278,7 +278,6 @@ export default function GalleryPage() {
                   <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-2">Pilih File Gambar *</span>
                   <label className="flex flex-col items-center justify-center w-full h-36 border border-dashed border-border rounded-sm bg-secondary/30 hover:bg-secondary/50 transition-colors cursor-pointer p-4 text-center">
                     <input
-                      required
                       type="file"
                       accept="image/*"
                       onChange={handleFileChange}
