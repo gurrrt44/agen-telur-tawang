@@ -174,7 +174,7 @@ export async function GET(request: NextRequest) {
     if (todayEntry) {
       const todayPrice = todayEntry.v as number;
       const yesterdayPrice = yesterdayEntry ? (yesterdayEntry.v as number) : (todayPrice - 100);
-      const predictedTomorrow = Math.round(todayPrice + (todayPrice - yesterdayPrice) * 1.1 + 50);
+      const predictedTomorrow = Math.round(todayPrice + (todayPrice - yesterdayPrice) * 1.1);
       series.push({
         label: "Besok",
         v: null,
@@ -186,7 +186,7 @@ export async function GET(request: NextRequest) {
       const secondLastEntry = series[series.length - 2];
       const lastPrice = lastEntry.v as number;
       const secondLastPrice = secondLastEntry ? (secondLastEntry.v as number) : (lastPrice - 100);
-      const predictedToday = Math.round(lastPrice + (lastPrice - secondLastPrice) * 1.1 + 50);
+      const predictedToday = Math.round(lastPrice + (lastPrice - secondLastPrice) * 1.1);
       series.push({ label: "Kini", v: null, f: predictedToday, date: todayStr });
     }
 
