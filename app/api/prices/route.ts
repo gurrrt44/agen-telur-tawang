@@ -16,6 +16,12 @@ function formatDateLabel(dateStr: string) {
   }
 }
 
+// Get today/yesterday string in WIB timezone
+function getWIBDateStr(offsetDays = 0) {
+  const wibFormatter = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jakarta" });
+  return wibFormatter.format(new Date(Date.now() + offsetDays * 86400000));
+}
+
 // Generate fallback / demo historical data if DB is empty
 function generateFallbackData(marketId: string) {
   const market = MARKETS.find(m => m.id === marketId) || MARKETS[0];
@@ -149,8 +155,10 @@ export async function GET(request: NextRequest) {
     // Sort ascending
     records.sort((a, b) => new Date(a.recorded_date).getTime() - new Date(b.recorded_date).getTime());
 
-    const todayStr = new Date().toISOString().split("T")[0];
-    const yesterdayStr = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+    // Gunakan timezone WIB (Asia/Jakarta) agar tanggal sesuai dengan update SunEgg
+    const wibFormatter = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jakarta" });
+    const todayStr = wibFormatter.format(new Date());
+    const yesterdayStr = wibFormatter.format(new Date(Date.now() - 86400000));
 
     const series: { label: string; v: number | null; f: number | null; date: string }[] = records.map((record) => {
       const isToday = record.recorded_date === todayStr;
@@ -179,7 +187,7 @@ export async function GET(request: NextRequest) {
         label: "Besok",
         v: null,
         f: predictedTomorrow,
-        date: new Date(Date.now() + 86400000).toISOString().split("T")[0],
+        date: getWIBDateStr(1),
       });
     } else {
       const lastEntry = series[series.length - 1];
