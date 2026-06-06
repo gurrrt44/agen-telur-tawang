@@ -352,7 +352,7 @@
   background: var(--_bg);
   border: 1px solid hsl(var(--spk-hue) calc(var(--active) * 70%) calc((var(--active) * 40%) + 20%));
   cursor: pointer;
-  padding: 0.55em 1em;
+  padding: 0.7em 1.3em;
   display: inline-flex;
   align-items: center;
   gap: 0.3em;
@@ -373,7 +373,7 @@
     border-color var(--spk-transition);
   scale: calc(1 + (var(--active) * 0.04));
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -440,7 +440,7 @@
 
 /* ---- Star icon ---- */
 .spk-icon {
-  inline-size: 0.95em;
+  inline-size: 1.1em;
   flex-shrink: 0;
   translate: 0 -5%;
   overflow: visible;
@@ -476,10 +476,11 @@
   position: relative;
   z-index: 1;
   translate: 0 -5%;
+  /* Putih terang sejak awal (95% → 80%), saat aktif/hover naik ke 100% */
   background: linear-gradient(
     90deg,
-    hsl(0 0% calc((var(--active) * 100%) + 60%)),
-    hsl(0 0% calc((var(--active) * 100%) + 30%))
+    hsl(0 0% calc((var(--active) * 5%) + 95%)),
+    hsl(0 0% calc((var(--active) * 20%) + 80%))
   );
   -webkit-background-clip: text;
   background-clip: text;
