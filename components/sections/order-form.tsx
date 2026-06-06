@@ -98,7 +98,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                     <motion.button
                       key={b.id}
                       type="button"
-                      whileHover={{ scale: 1.04, y: -4, transition: { type: "spring", stiffness: 340, damping: 18 } }}
+                      whileHover={{ scale: 1.05, y: -5, transition: { type: "spring", stiffness: 500, damping: 22 } }}
                       whileTap={{ scale: 0.96 }}
                       onClick={() => onBundleChange(selectedBundle === b.id ? "" : b.id)}
                       className={`flex flex-col items-start gap-0.5 border p-3 text-left transition shadow-sm hover:shadow-md ${
@@ -127,7 +127,7 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                     <motion.button
                       key={m.k}
                       type="button"
-                      whileHover={{ scale: 1.04, y: -4, transition: { type: "spring", stiffness: 340, damping: 18 } }}
+                      whileHover={{ scale: 1.05, y: -5, transition: { type: "spring", stiffness: 500, damping: 22 } }}
                       whileTap={{ scale: 0.97 }}
                       onClick={() => setForm({ ...form, metode: m.k })}
                       className={`relative flex flex-col items-start gap-1 overflow-hidden border p-4 text-left transition shadow-sm hover:shadow-md ${

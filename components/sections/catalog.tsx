@@ -45,7 +45,7 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
               transition={{ delay: i * 0.05, type: "spring", stiffness: 150, damping: 15 }}
               whileHover={{ scale: 1.02, y: -5, transition: { type: "spring", stiffness: 250, damping: 16 } }}
             >
-              <CursorGlowCard className="flex h-full flex-col border border-border bg-card p-7 transition hover:border-foreground/40">
+              <CursorGlowCard className="catalog-card flex h-full flex-col border border-border bg-card p-7 transition hover:border-transparent">
                 <div className="flex items-start justify-between font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                   <span>No. {String(i + 1).padStart(2, "0")}</span>
                   <motion.span

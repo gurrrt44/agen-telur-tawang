@@ -308,6 +308,37 @@
 }
 
 /* ==========================================
+   CATALOG CARD — Gradient border on hover
+   Brown #6B3A1F → amber/gold #E8A838
+   ========================================== */
+
+.catalog-card {
+  position: relative;
+}
+
+.catalog-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2.5px;
+  background: linear-gradient(135deg, #6B3A1F 0%, #C47A1A 45%, #E8A838 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.catalog-card:hover::before {
+  opacity: 1;
+}
+
+/* ==========================================
    SPARKLE BUTTON — Market selector
    Adapted from: jhey / CSS-tricks sparkle demo
    Hue: 38 (amber/gold) matching --accent
