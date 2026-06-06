@@ -98,10 +98,12 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                     <motion.button
                       key={b.id}
                       type="button"
-                      whileHover={{ scale: 1.05, y: -5, transition: { type: "spring", stiffness: 500, damping: 22 } }}
-                      whileTap={{ scale: 0.96 }}
+                      whileHover={{ scale: 1.05, y: -6 }}
+                      whileTap={{ scale: 0.96, y: 0 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
                       onClick={() => onBundleChange(selectedBundle === b.id ? "" : b.id)}
-                      className={`flex flex-col items-start gap-0.5 border p-3 text-left transition shadow-sm hover:shadow-md ${
+                      style={{ willChange: "transform" }}
+                      className={`flex flex-col items-start gap-0.5 border p-3 text-left shadow-sm hover:shadow-md ${
                         selectedBundle === b.id
                           ? "border-foreground bg-foreground text-background"
                           : "border-border hover:bg-secondary"
@@ -127,10 +129,12 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                     <motion.button
                       key={m.k}
                       type="button"
-                      whileHover={{ scale: 1.05, y: -5, transition: { type: "spring", stiffness: 500, damping: 22 } }}
-                      whileTap={{ scale: 0.97 }}
+                      whileHover={{ scale: 1.05, y: -6 }}
+                      whileTap={{ scale: 0.97, y: 0 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
                       onClick={() => setForm({ ...form, metode: m.k })}
-                      className={`relative flex flex-col items-start gap-1 overflow-hidden border p-4 text-left transition shadow-sm hover:shadow-md ${
+                      style={{ willChange: "transform" }}
+                      className={`relative flex flex-col items-start gap-1 overflow-hidden border p-4 text-left shadow-sm hover:shadow-md ${
                         form.metode === m.k ? "border-foreground bg-foreground text-background" : "border-border hover:bg-secondary"
                       }`}
                     >
