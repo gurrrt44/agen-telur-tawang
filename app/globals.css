@@ -306,3 +306,223 @@
     display: none !important;
   }
 }
+
+/* ==========================================
+   SPARKLE BUTTON — Market selector
+   Adapted from: jhey / CSS-tricks sparkle demo
+   Hue: 38 (amber/gold) matching --accent
+   ========================================== */
+
+:root {
+  --spk-transition: 0.25s;
+  --spk-spark:      1.8s;
+  --spk-hue:        38;      /* amber accent */
+  --spk-cut:        0.12em;
+}
+
+/* ---- Wrapper ---- */
+.spk-wrapper {
+  --active: 0;
+  --play-state: paused;
+  position: relative;
+  display: inline-flex;
+}
+
+.spk-wrapper:is(:hover, :focus-within),
+.spk-wrapper.spk-active {
+  --active: 1;
+  --play-state: running;
+}
+
+/* ---- Core button ---- */
+.spk-btn {
+  --_bg:
+    radial-gradient(
+      40% 50% at center 100%,
+      hsl(var(--spk-hue) calc(var(--active) * 97%) 72% / var(--active)),
+      transparent
+    ),
+    radial-gradient(
+      80% 100% at center 120%,
+      hsl(var(--spk-hue) calc(var(--active) * 97%) 68% / var(--active)),
+      transparent
+    ),
+    hsl(var(--spk-hue) calc(var(--active) * 97%) calc((var(--active) * 44%) + 12%));
+
+  background: var(--_bg);
+  border: 1px solid hsl(var(--spk-hue) calc(var(--active) * 70%) calc((var(--active) * 40%) + 20%));
+  cursor: pointer;
+  padding: 0.55em 1em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  white-space: nowrap;
+  border-radius: 4px;
+  position: relative;
+  box-shadow:
+    0 0 calc(var(--active) * 3.5em) calc(var(--active) * 1.5em)
+      hsl(var(--spk-hue) 97% 55% / 0.55),
+    0 0.05em 0 0
+      hsl(var(--spk-hue) calc(var(--active) * 97%) calc((var(--active) * 50%) + 30%)) inset,
+    0 -0.05em 0 0
+      hsl(var(--spk-hue) calc(var(--active) * 97%) calc(var(--active) * 55%)) inset;
+  transition:
+    box-shadow var(--spk-transition),
+    scale    var(--spk-transition),
+    background var(--spk-transition),
+    border-color var(--spk-transition);
+  scale: calc(1 + (var(--active) * 0.04));
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  outline: none;
+}
+
+.spk-btn:active { scale: 0.97; }
+
+/* Outer glow ring */
+.spk-btn::before {
+  content: "";
+  position: absolute;
+  inset: -0.2em;
+  z-index: -1;
+  border: 0.18em solid hsl(var(--spk-hue) 97% 55% / 0.45);
+  border-radius: 4px;
+  opacity: var(--active, 0);
+  transition: opacity var(--spk-transition);
+}
+
+/* ---- Spark sweeping ring ---- */
+.spk-spark {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  mask: linear-gradient(white, transparent 50%);
+  animation: spk-flip calc(var(--spk-spark) * 2) infinite steps(2, end);
+}
+
+.spk-spark::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  aspect-ratio: 1;
+  top: 0;
+  left: 50%;
+  translate: -50% -15%;
+  transform: rotate(-90deg);
+  opacity: calc(var(--active) + 0.35);
+  background: conic-gradient(from 0deg, transparent 0 340deg, white 360deg);
+  transition: opacity var(--spk-transition);
+  animation: spk-rotate var(--spk-spark) linear infinite both;
+}
+
+.spk-spark::after {
+  content: "";
+  position: absolute;
+  inset: var(--spk-cut);
+  border-radius: 4px;
+}
+
+@keyframes spk-flip   { to { rotate: 360deg; } }
+@keyframes spk-rotate { to { transform: rotate(90deg); } }
+
+/* ---- Backdrop (fills button on active) ---- */
+.spk-backdrop {
+  position: absolute;
+  inset: var(--spk-cut);
+  background: var(--_bg);
+  border-radius: 4px;
+  transition: background var(--spk-transition);
+}
+
+/* ---- Star icon ---- */
+.spk-icon {
+  inline-size: 0.95em;
+  flex-shrink: 0;
+  translate: 0 -5%;
+  overflow: visible;
+}
+
+.spk-icon path {
+  color: hsl(0 0% calc((var(--active, 0) * 70%) + var(--base, 30%)));
+  transform-box: fill-box;
+  transform-origin: center;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1;
+  animation-delay: calc((var(--spk-transition) * 1.5) + (var(--delay, 0) * 1s));
+  animation-duration: 0.6s;
+  transition: color var(--spk-transition);
+}
+
+.spk-wrapper:is(:hover, :focus-within) .spk-icon path,
+.spk-wrapper.spk-active .spk-icon path {
+  animation-name: spk-bounce;
+}
+
+@keyframes spk-bounce {
+  35%, 65% { scale: var(--scale, 1); }
+}
+
+.spk-icon path:nth-of-type(1) { --scale: 0.5;  --delay: 0.1;  --base: 40%; }
+.spk-icon path:nth-of-type(2) { --scale: 1.5;  --delay: 0.2;  --base: 20%; }
+.spk-icon path:nth-of-type(3) { --scale: 2.5;  --delay: 0.35; --base: 30%; }
+
+/* ---- Button label ---- */
+.spk-text {
+  position: relative;
+  z-index: 1;
+  translate: 0 -5%;
+  background: linear-gradient(
+    90deg,
+    hsl(0 0% calc((var(--active) * 100%) + 60%)),
+    hsl(0 0% calc((var(--active) * 100%) + 30%))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: background var(--spk-transition);
+}
+
+/* ---- Floating particles ---- */
+.spk-particle-pen {
+  position: absolute;
+  width: 200%;
+  aspect-ratio: 1;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  -webkit-mask: radial-gradient(white, transparent 65%);
+  mask: radial-gradient(white, transparent 65%);
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--active, 0);
+  transition: opacity var(--spk-transition);
+}
+
+.spk-particle {
+  fill: white;
+  width: calc(var(--size, 0.25) * 1rem);
+  aspect-ratio: 1;
+  position: absolute;
+  top:  calc(var(--y, 50) * 1%);
+  left: calc(var(--x, 50) * 1%);
+  opacity: var(--alpha, 1);
+  animation: spk-float calc(var(--duration, 1) * 1s) calc(var(--delay) * -1s) infinite linear;
+  transform-origin: var(--origin-x, 1000%) var(--origin-y, 1000%);
+  z-index: -1;
+  animation-play-state: var(--play-state, paused);
+}
+
+.spk-particle:nth-of-type(even) { animation-direction: reverse; }
+
+.spk-particle path {
+  fill: hsl(var(--spk-hue) 85% 65%);
+  stroke: none;
+}
+
+@keyframes spk-float { to { rotate: 360deg; } }
+

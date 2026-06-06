@@ -12,6 +12,7 @@ import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
 import { CursorGlowCard } from "@/components/ui/cursor-glow-card";
 import { OdometerPrice } from "@/components/ui/odometer-price";
+import { SparkleButton } from "@/components/ui/sparkle-button";
 
 
 
@@ -163,39 +164,13 @@ export function Pricing() {
           <div className="mt-10 flex flex-wrap items-center gap-2">
             <span className="mr-2 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Pilih pasar:</span>
             {MARKETS.map((m) => (
-              <motion.button
+              <SparkleButton
                 key={m.id}
+                isActive={marketId === m.id}
                 onClick={() => setMarketId(m.id)}
-                whileTap={{ scale: 0.95 }}
-                className={`group relative overflow-hidden rounded-sm border px-4 py-2.5 font-mono text-sm font-semibold uppercase tracking-[0.14em] transition-all duration-300 ${
-                  marketId === m.id
-                    ? "border-accent bg-accent text-foreground shadow-lg shadow-accent/30"
-                    : "border-border hover:border-accent/60 hover:shadow-md hover:shadow-accent/10"
-                }`}
-                style={marketId !== m.id ? undefined : undefined}
               >
-                {/* Shimmer sweep on hover (inactive only) */}
-                {marketId !== m.id && (
-                  <span
-                    className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-accent/15 to-transparent transition-transform duration-500 group-hover:translate-x-full"
-                  />
-                )}
-                {/* Glow ring on hover (inactive only) */}
-                {marketId !== m.id && (
-                  <span className="pointer-events-none absolute inset-0 rounded-sm opacity-0 ring-1 ring-accent/50 transition-opacity duration-300 group-hover:opacity-100" />
-                )}
-                <motion.span
-                  className="relative z-10 inline-block"
-                  animate={marketId === m.id ? { y: 0 } : {}}
-                  whileHover={{ y: -1 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                >
-                  {m.name} · {m.city}
-                </motion.span>
-                {marketId === m.id && (
-                  <motion.span layoutId="market-dot" className="absolute -right-1 -top-1 size-2 rounded-full bg-foreground" />
-                )}
-              </motion.button>
+                {m.name} · {m.city}
+              </SparkleButton>
             ))}
           </div>
         </FadeIn>
