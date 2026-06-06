@@ -161,7 +161,7 @@ export function Pricing() {
 
         {/* Market selector */}
         <FadeIn delay={0.1}>
-          <div className="mt-10 flex flex-wrap items-center gap-2">
+          <div className="mt-10 flex flex-wrap items-center gap-4">
             <span className="mr-2 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Pilih pasar:</span>
             {MARKETS.map((m) => (
               <SparkleButton
