@@ -6,7 +6,8 @@ interface SparkleButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   isActive?: boolean;
-  className?: string;
+  className?: string;      // applied to wrapper div
+  fullWidth?: boolean;     // makes inner button stretch to 100%
 }
 
 const PARTICLE_PATH =
@@ -17,6 +18,7 @@ export function SparkleButton({
   onClick,
   isActive = false,
   className = "",
+  fullWidth = false,
 }: SparkleButtonProps) {
   const penRef = useRef<HTMLSpanElement>(null);
 
@@ -47,7 +49,11 @@ export function SparkleButton({
 
   return (
     <div className={`spk-wrapper${isActive ? " spk-active" : ""} ${className}`}>
-      <button type="button" onClick={onClick} className="spk-btn">
+      <button
+        type="button"
+        onClick={onClick}
+        className={`spk-btn${fullWidth ? " spk-btn--full" : ""}`}
+      >
         {/* Spinning spark ring */}
         <span className="spk-spark" />
         {/* Coloured backdrop (fills on active) */}

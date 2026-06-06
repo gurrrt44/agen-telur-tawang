@@ -388,6 +388,10 @@
 
 .spk-btn:active { scale: 0.97; }
 
+/* Full-width variant (e.g. catalog card) */
+.spk-wrapper:has(.spk-btn--full) { width: 100%; }
+.spk-btn--full { width: 100%; justify-content: center; }
+
 /* Outer glow ring */
 .spk-btn::before {
   content: "";

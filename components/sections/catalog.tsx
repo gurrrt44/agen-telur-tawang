@@ -6,6 +6,7 @@ import { BUNDLES } from "@/lib/data";
 import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
 import { CursorGlowCard } from "@/components/ui/cursor-glow-card";
+import { SparkleButton } from "@/components/ui/sparkle-button";
 
 interface CatalogProps {
   onSelectBundle: (id: string) => void;
@@ -68,18 +69,11 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
                   <div className="mt-1 font-serif text-lg text-muted-foreground italic font-medium">Hubungi toko untuk harga terkini</div>
                 </div>
 
-                {/* Tombol ke Form */}
-                <motion.button
-                  onClick={() => handlePesan(b.id)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="mt-5 inline-flex w-full items-center justify-between rounded-sm bg-accent px-5 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-foreground shadow-sm hover:shadow-md"
-                >
-                  Pesan paket ini
-                  <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                    <ArrowUpRight className="size-3.5" />
-                  </motion.span>
-                </motion.button>
+                <div className="mt-5">
+                  <SparkleButton onClick={() => handlePesan(b.id)} fullWidth>
+                    Pesan paket ini  ↗
+                  </SparkleButton>
+                </div>
               </CursorGlowCard>
             </motion.div>
           ))}

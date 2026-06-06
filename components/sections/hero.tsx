@@ -5,6 +5,7 @@ import { motion, useMotionValue, useTransform } from "motion/react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
+import { SparkleButton } from "@/components/ui/sparkle-button";
 
 export function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -61,13 +62,13 @@ export function Hero() {
             </p>
           </FadeIn>
           <FadeIn delay={0.6}>
-            <div className="mt-10 flex flex-wrap items-center gap-3">
-              <motion.a href="#paket" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center gap-2 rounded-sm bg-accent px-7 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-foreground shadow-md hover:shadow-lg">
-                Lihat Paket <ArrowUpRight className="size-4" />
-              </motion.a>
-              <motion.a href="#harga" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center gap-2 rounded-sm border-2 border-foreground/30 px-7 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] hover:bg-secondary">
-                Harga Hari Ini
-              </motion.a>
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <a href="#paket">
+                <SparkleButton>Lihat Paket  ↗</SparkleButton>
+              </a>
+              <a href="#harga">
+                <SparkleButton>Harga Hari Ini</SparkleButton>
+              </a>
             </div>
           </FadeIn>
 

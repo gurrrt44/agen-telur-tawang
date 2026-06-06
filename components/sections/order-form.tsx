@@ -6,6 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import { BUNDLES } from "@/lib/data";
 import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
+import { SparkleButton } from "@/components/ui/sparkle-button";
 
 const WA_NUMBER = "6285606022228";
 
@@ -90,27 +91,17 @@ export function OrderForm({ selectedBundle, onBundleChange }: OrderFormProps) {
                 />
               </label>
 
-              {/* Pilih paket */}
               <div>
                 <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Paket yang diminati</span>
-                <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                <div className="mt-3 flex flex-wrap gap-3">
                   {BUNDLES.map((b) => (
-                    <motion.button
+                    <SparkleButton
                       key={b.id}
-                      type="button"
-                      whileTap={{ scale: 0.96 }}
+                      isActive={selectedBundle === b.id}
                       onClick={() => onBundleChange(selectedBundle === b.id ? "" : b.id)}
-                      className={`flex flex-col items-start gap-0.5 border p-3 text-left transition ${
-                        selectedBundle === b.id
-                          ? "border-foreground bg-foreground text-background"
-                          : "border-border hover:bg-secondary"
-                      }`}
                     >
-                      <span className="font-serif text-sm font-semibold">{b.name}</span>
-                      <span className={`font-mono text-[10px] font-medium uppercase tracking-[0.14em] ${selectedBundle === b.id ? "text-background/70" : "text-muted-foreground"}`}>
-                        {b.weight}
-                      </span>
-                    </motion.button>
+                      {b.name} · {b.weight}
+                    </SparkleButton>
                   ))}
                 </div>
               </div>
