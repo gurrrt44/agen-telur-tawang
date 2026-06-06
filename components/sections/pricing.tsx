@@ -153,7 +153,7 @@ export function Pricing() {
               className="size-1.5 rounded-full bg-accent"
             />
             <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground">
-              Harga diperbarui otomatis setiap hari pukul 10:00 WIB · Sumber: SunEgg.id
+              Harga diperbarui otomatis setiap hari pukul 10:00 WIB
             </span>
           </div>
         </FadeIn>
@@ -166,13 +166,34 @@ export function Pricing() {
               <motion.button
                 key={m.id}
                 onClick={() => setMarketId(m.id)}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className={`relative rounded-sm border px-4 py-2.5 font-mono text-sm font-semibold uppercase tracking-[0.14em] transition ${marketId === m.id ? "border-accent bg-accent text-foreground shadow-md" : "border-border hover:bg-secondary"}`}
+                whileTap={{ scale: 0.95 }}
+                className={`group relative overflow-hidden rounded-sm border px-4 py-2.5 font-mono text-sm font-semibold uppercase tracking-[0.14em] transition-all duration-300 ${
+                  marketId === m.id
+                    ? "border-accent bg-accent text-foreground shadow-lg shadow-accent/30"
+                    : "border-border hover:border-accent/60 hover:shadow-md hover:shadow-accent/10"
+                }`}
+                style={marketId !== m.id ? undefined : undefined}
               >
-                {m.name} · {m.city}
+                {/* Shimmer sweep on hover (inactive only) */}
+                {marketId !== m.id && (
+                  <span
+                    className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-accent/15 to-transparent transition-transform duration-500 group-hover:translate-x-full"
+                  />
+                )}
+                {/* Glow ring on hover (inactive only) */}
+                {marketId !== m.id && (
+                  <span className="pointer-events-none absolute inset-0 rounded-sm opacity-0 ring-1 ring-accent/50 transition-opacity duration-300 group-hover:opacity-100" />
+                )}
+                <motion.span
+                  className="relative z-10 inline-block"
+                  animate={marketId === m.id ? { y: 0 } : {}}
+                  whileHover={{ y: -1 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                >
+                  {m.name} · {m.city}
+                </motion.span>
                 {marketId === m.id && (
-                  <motion.span layoutId="market-dot" className="absolute -right-1 -top-1 size-2 rounded-full bg-accent" />
+                  <motion.span layoutId="market-dot" className="absolute -right-1 -top-1 size-2 rounded-full bg-foreground" />
                 )}
               </motion.button>
             ))}

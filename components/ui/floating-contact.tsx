@@ -1,11 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { MessageCircle, X } from "lucide-react";
 
 export function FloatingContact() {
   const [open, setOpen] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
+  const fabRef = useRef<HTMLButtonElement>(null);
+
+  // Auto-close on scroll
+  useEffect(() => {
+    if (!open) return;
+
+    const handleScroll = () => setOpen(false);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [open]);
+
+  // Auto-close on click outside (kecuali popup itu sendiri & FAB)
+  useEffect(() => {
+    if (!open) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      const insidePopup = popupRef.current?.contains(target);
+      const insideFab = fabRef.current?.contains(target);
+      if (!insidePopup && !insideFab) {
+        setOpen(false);
+      }
+    };
+
+    // Delay sedikit agar klik buka FAB tidak langsung menutup
+    const timer = setTimeout(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
@@ -13,6 +48,7 @@ export function FloatingContact() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={popupRef}
             initial={{ opacity: 0, y: 16, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.9 }}
@@ -56,7 +92,8 @@ export function FloatingContact() {
 
       {/* FAB button */}
       <motion.button
-        onClick={() => setOpen(!open)}
+        ref={fabRef}
+        onClick={() => setOpen((prev) => !prev)}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         className="group relative flex items-center gap-2.5 rounded-full bg-[#25D366] py-3.5 pl-4 pr-5 font-mono text-sm font-bold text-white shadow-lg shadow-[#25D366]/30 transition-all hover:shadow-xl hover:shadow-[#25D366]/40"
