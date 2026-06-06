@@ -336,7 +336,7 @@
 
 /* Stroke / outline saat button dipilih */
 .spk-wrapper.spk-active .spk-btn {
-  outline: 2px solid hsl(var(--spk-hue) 97% 62%);
+  outline: 3px solid #3b1f08;
   outline-offset: 3px;
 }
 
