@@ -40,17 +40,24 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
             <motion.div
               key={b.id}
               className="catalog-card-wrap"
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.95, y: 24 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: i * 0.06, type: "spring", stiffness: 130, damping: 18 }}
+              transition={{ delay: i * 0.05, type: "spring", stiffness: 150, damping: 15 }}
+              // Pop-out hover hanya aktif di desktop (pointer:fine = mouse)
+              // Di mobile (touch) whileHover tidak terpicu karena tidak ada hover state
+              whileHover={{ scale: 1.02, y: -5, transition: { type: "spring", stiffness: 250, damping: 16 } }}
+              whileTap={{ scale: 0.98, transition: { type: "spring", stiffness: 400, damping: 20 } }}
             >
               <CursorGlowCard className="catalog-card flex h-full flex-col border border-border bg-card p-7 transition hover:border-transparent">
                 <div className="flex items-start justify-between font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                   <span>No. {String(i + 1).padStart(2, "0")}</span>
-                  <span className="rounded-sm bg-accent/15 px-2 py-1 text-accent">
+                  <motion.span
+                    whileHover={{ scale: 1.08, rotate: -2 }}
+                    className="rounded-sm bg-accent/15 px-2 py-1 text-accent"
+                  >
                     {b.tag}
-                  </span>
+                  </motion.span>
                 </div>
 
                 <h3 className="mt-5 font-serif text-2xl font-semibold">{b.name}</h3>
@@ -67,14 +74,14 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
                 </div>
 
                 <div className="mt-5">
-                  {/* Desktop: SparkleButton dengan animasi penuh */}
+                  {/* Desktop: SparkleButton animasi penuh */}
                   <div className="hidden sm:block">
                     <SparkleButton onClick={() => handlePesan(b.id)} fullWidth>
                       Pesan paket ini  ↗
                     </SparkleButton>
                   </div>
 
-                  {/* Mobile: plain button ringan tanpa partikel JS */}
+                  {/* Mobile: plain button ringan */}
                   <button
                     type="button"
                     onClick={() => handlePesan(b.id)}
