@@ -585,6 +585,13 @@
   -ms-overflow-style: none;
 }
 
+/* Sembunyikan chip pills di desktop (sm = 640px ke atas) */
+@media (min-width: 640px) {
+  .market-chip-scroll {
+    display: none !important;
+  }
+}
+
 .market-chip-scroll::-webkit-scrollbar {
   display: none;
 }

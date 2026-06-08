@@ -180,7 +180,7 @@ export function Pricing() {
             </div>
 
             {/* Mobile: chip pills horizontal scroll (di bawah sm) */}
-            <div className="market-chip-scroll sm:hidden">
+            <div className="market-chip-scroll sm:!hidden">
               {MARKETS.map((m) => (
                 <button
                   key={m.id}
