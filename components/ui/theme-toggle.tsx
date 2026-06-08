@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");
@@ -12,15 +13,53 @@ export function ThemeToggle() {
   }, []);
 
   const toggleTheme = useCallback(() => {
+    if (isAnimating) return;
+
     const nextTheme = theme === "light" ? "dark" : "light";
-    setTheme(nextTheme);
-    localStorage.setItem("theme", nextTheme);
-    if (nextTheme === "dark") {
-      document.documentElement.classList.add("dark");
+
+    const applyTheme = () => {
+      setTheme(nextTheme);
+      localStorage.setItem("theme", nextTheme);
+      if (nextTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    };
+
+    // Cari posisi button untuk origin circle wipe
+    const btn = document.querySelector(".theme-toggle-pill") as HTMLElement;
+    const rect = btn?.getBoundingClientRect();
+    const x = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const y = rect ? rect.top + rect.height / 2 : 30;
+    const maxRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+
+    if (document.startViewTransition) {
+      setIsAnimating(true);
+      document.documentElement.style.setProperty("--toggle-x", `${x}px`);
+      document.documentElement.style.setProperty("--toggle-y", `${y}px`);
+      document.documentElement.style.setProperty("--toggle-max-r", `${maxRadius}px`);
+
+      const t = document.startViewTransition(applyTheme);
+      t.finished.then(() => setIsAnimating(false));
     } else {
-      document.documentElement.classList.remove("dark");
+      // Fallback: overlay ringan dengan durasi pendek
+      setIsAnimating(true);
+      const overlay = document.createElement("div");
+      overlay.style.cssText = `
+        position:fixed;inset:0;z-index:9999;pointer-events:none;
+        background:${nextTheme === "dark" ? "#0e0d0a" : "#fbfaf6"};
+        clip-path:circle(0px at ${x}px ${y}px);
+        transition:clip-path 0.4s cubic-bezier(0.4,0,0.2,1);
+      `;
+      document.body.appendChild(overlay);
+      requestAnimationFrame(() => {
+        overlay.style.clipPath = `circle(${maxRadius}px at ${x}px ${y}px)`;
+      });
+      setTimeout(() => { applyTheme(); }, 200);
+      setTimeout(() => { overlay.remove(); setIsAnimating(false); }, 420);
     }
-  }, [theme]);
+  }, [theme, isAnimating]);
 
   const isDark = theme === "dark";
 
@@ -31,7 +70,6 @@ export function ThemeToggle() {
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       whileTap={{ scale: 0.88 }}
     >
-      {/* Track background with sky / night gradient */}
       <motion.div
         className="theme-toggle-track"
         animate={{
@@ -41,7 +79,7 @@ export function ThemeToggle() {
         }}
         transition={{ duration: 0.4, ease: "easeInOut" }}
       >
-        {/* Stars (visible in dark mode) */}
+        {/* Stars (dark mode) */}
         <AnimatePresence>
           {isDark && (
             <>
@@ -70,7 +108,7 @@ export function ThemeToggle() {
           )}
         </AnimatePresence>
 
-        {/* Clouds (visible in light mode) */}
+        {/* Clouds (light mode) */}
         <AnimatePresence>
           {!isDark && (
             <>
@@ -92,7 +130,7 @@ export function ThemeToggle() {
           )}
         </AnimatePresence>
 
-        {/* The knob (sun/moon) */}
+        {/* Knob */}
         <motion.div
           className="theme-toggle-knob"
           animate={{ x: isDark ? 20 : 0 }}
