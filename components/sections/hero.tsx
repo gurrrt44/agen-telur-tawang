@@ -4,8 +4,23 @@ import { useRef } from "react";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { SectionLabel } from "@/components/ui/section-label";
-import { FadeIn } from "@/components/ui/fade-in";
 import { SparkleButton } from "@/components/ui/sparkle-button";
+
+// Helper: animate on mount (bukan scroll-triggered)
+function MountFade({ children, delay = 0, y = 16, className = "" }: {
+  children: React.ReactNode; delay?: number; y?: number; className?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -42,7 +57,10 @@ export function Hero() {
 
       <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 gap-10 px-6 py-16 lg:grid-cols-12 lg:gap-12 lg:px-10 lg:py-24">
         <div className="lg:col-span-7">
-          <FadeIn><SectionLabel n="00" label="Katalog Tahun Berjalan — 2026" /></FadeIn>
+          {/* SectionLabel — mount animate */}
+          <MountFade delay={0}><SectionLabel n="00" label="Katalog Tahun Berjalan — 2026" /></MountFade>
+
+          {/* Headline — staggered per baris */}
           <h1 className="mt-8 font-serif text-5xl leading-[1.02] tracking-tight md:text-7xl">
             {["Telur ayam segar,", "dari kandang ke", "dapur Anda,", "setiap pagi."].map((line, i) => (
               <motion.span
@@ -56,19 +74,23 @@ export function Hero() {
               </motion.span>
             ))}
           </h1>
-          <FadeIn delay={0.5}>
+
+          {/* Deskripsi — mount animate */}
+          <MountFade delay={0.5}>
             <p className="mt-8 max-w-xl font-serif text-xl leading-relaxed text-muted-foreground font-medium">
               &ldquo;Agen Telur Tawang&rdquo; memasok telur ayam grade A pilihan untuk rumah tangga, warung, dan resto di sekitar Tawang, Mojokrapak dan sekitarnya. Dikemas hari yang sama, diantar dalam 24 jam.
             </p>
-          </FadeIn>
-          <FadeIn delay={0.6}>
-            {/* Desktop: SparkleButton — hanya tampil sm ke atas */}
+          </MountFade>
+
+          {/* CTA Buttons — mount animate */}
+          <MountFade delay={0.65}>
+            {/* Desktop: SparkleButton */}
             <div className="mt-10 hidden sm:flex flex-wrap items-center gap-4">
               <a href="#paket"><SparkleButton>Lihat Paket  ↗</SparkleButton></a>
               <a href="#harga"><SparkleButton>Harga Hari Ini</SparkleButton></a>
             </div>
 
-            {/* Mobile: plain button ringan — hanya tampil di bawah sm */}
+            {/* Mobile: plain button */}
             <div className="mt-10 flex flex-col gap-3 sm:hidden">
               <a
                 href="#paket"
@@ -83,18 +105,25 @@ export function Hero() {
                 Harga Hari Ini
               </a>
             </div>
-          </FadeIn>
+          </MountFade>
 
-          <FadeIn delay={0.8}>
-            <dl className="mt-14 grid max-w-2xl grid-cols-3 gap-4 sm:gap-8 border-t border-border pt-8">
-              {[{ k: "Peternak Mitra", v: "17" }, { k: "Butir / Hari", v: "8.400" }, { k: "Pelanggan Aktif", v: "312" }].map((s, i) => (
-                <motion.div key={s.k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "0px 0px -40px 0px" }} transition={{ delay: 0.1 * i, duration: 0.6 }}>
-                  <dt className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{s.k}</dt>
-                  <dd className="mt-2 font-serif text-3xl font-semibold">{s.v}</dd>
-                </motion.div>
-              ))}
-            </dl>
-          </FadeIn>
+          {/* Stats — mount animate, staggered */}
+          <motion.dl
+            className="mt-14 grid max-w-2xl grid-cols-3 gap-4 sm:gap-8 border-t border-border pt-8"
+            initial="hidden"
+            animate="visible"
+            variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.85 } } }}
+          >
+            {[{ k: "Peternak Mitra", v: "17" }, { k: "Butir / Hari", v: "8.400" }, { k: "Pelanggan Aktif", v: "312" }].map((s) => (
+              <motion.div
+                key={s.k}
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } } }}
+              >
+                <dt className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{s.k}</dt>
+                <dd className="mt-2 font-serif text-3xl font-semibold">{s.v}</dd>
+              </motion.div>
+            ))}
+          </motion.dl>
         </div>
 
         <motion.div
