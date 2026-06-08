@@ -63,7 +63,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col overflow-x-hidden">
+      <body className="min-h-full flex flex-col overflow-x-clip">
         <Toaster position="top-center" richColors />
         <ClientProviders>
           {children}
