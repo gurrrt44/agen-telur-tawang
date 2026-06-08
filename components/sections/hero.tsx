@@ -83,7 +83,7 @@ export function Hero() {
           </MountFade>
 
           {/* CTA Buttons — mount animate */}
-          <MountFade delay={0.65}>
+          <MountFade delay={0.35}>
             {/* Desktop: SparkleButton */}
             <div className="mt-10 hidden sm:flex flex-wrap items-center gap-4">
               <a href="#paket"><SparkleButton>Lihat Paket  ↗</SparkleButton></a>
@@ -112,7 +112,7 @@ export function Hero() {
             className="mt-14 grid max-w-2xl grid-cols-3 gap-4 sm:gap-8 border-t border-border pt-8"
             initial="hidden"
             animate="visible"
-            variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.85 } } }}
+            variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.5 } } }}
           >
             {[{ k: "Peternak Mitra", v: "17" }, { k: "Butir / Hari", v: "8.400" }, { k: "Pelanggan Aktif", v: "312" }].map((s) => (
               <motion.div
