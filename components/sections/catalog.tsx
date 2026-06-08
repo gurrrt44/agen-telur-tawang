@@ -39,21 +39,19 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
           {BUNDLES.map((b, i) => (
             <motion.div
               key={b.id}
-              initial={{ opacity: 0, scale: 0.95, y: 24 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              className="catalog-card-wrap"
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-40px" }}
-              transition={{ delay: i * 0.05, type: "spring", stiffness: 150, damping: 15 }}
-              whileHover={{ scale: 1.02, y: -5, transition: { type: "spring", stiffness: 250, damping: 16 } }}
+              transition={{ delay: i * 0.06, type: "spring", stiffness: 130, damping: 18 }}
+              whileTap={{ scale: 0.97, transition: { type: "spring", stiffness: 400, damping: 20 } }}
             >
               <CursorGlowCard className="catalog-card flex h-full flex-col border border-border bg-card p-7 transition hover:border-transparent">
                 <div className="flex items-start justify-between font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                   <span>No. {String(i + 1).padStart(2, "0")}</span>
-                  <motion.span
-                    whileHover={{ scale: 1.08, rotate: -2 }}
-                    className="rounded-sm bg-accent/15 px-2 py-1 text-accent"
-                  >
+                  <span className="rounded-sm bg-accent/15 px-2 py-1 text-accent">
                     {b.tag}
-                  </motion.span>
+                  </span>
                 </div>
 
                 <h3 className="mt-5 font-serif text-2xl font-semibold">{b.name}</h3>
@@ -71,7 +69,7 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
 
                 <div className="mt-5">
                   <SparkleButton onClick={() => handlePesan(b.id)} fullWidth>
-                    Pesan paket ini  ↗
+                    Pesan paket ini  ↗
                   </SparkleButton>
                 </div>
               </CursorGlowCard>

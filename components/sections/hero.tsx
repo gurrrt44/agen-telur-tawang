@@ -31,13 +31,13 @@ export function Hero() {
         aria-hidden
         animate={{ rotate: 360 }}
         transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-        className="pointer-events-none absolute -right-32 -top-32 size-[420px] rounded-full border border-dashed border-accent/30"
+        className="pointer-events-none absolute -right-32 -top-32 size-[420px] rounded-full border border-dashed border-accent/30 hidden sm:block"
       />
       <motion.div
         aria-hidden
         animate={{ rotate: -360 }}
         transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-        className="pointer-events-none absolute -right-20 -top-20 size-[280px] rounded-full border border-dashed border-accent/40"
+        className="pointer-events-none absolute -right-20 -top-20 size-[280px] rounded-full border border-dashed border-accent/40 hidden sm:block"
       />
 
       <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 gap-10 px-6 py-16 lg:grid-cols-12 lg:gap-12 lg:px-10 lg:py-24">
@@ -62,7 +62,7 @@ export function Hero() {
             </p>
           </FadeIn>
           <FadeIn delay={0.6}>
-            <div className="mt-10 flex flex-wrap items-center gap-4">
+            <div className="mt-10 flex flex-wrap items-center gap-4 hero-cta-wrap">
               <a href="#paket">
                 <SparkleButton>Lihat Paket  ↗</SparkleButton>
               </a>

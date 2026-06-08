@@ -110,6 +110,7 @@
 
   html {
     font-size: var(--font-size);
+    overflow-x: hidden;
   }
 
   /* Better contrast for muted text — elderly readability */
@@ -567,4 +568,98 @@
 }
 
 @keyframes spk-float { to { rotate: 360deg; } }
+
+/* ==========================================
+   MARKET CHIP — Mobile-friendly horizontal scroll pills
+   ========================================== */
+
+.market-chip-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.market-chip-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.market-chip {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.55em 1em;
+  border-radius: 9999px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.market-chip:active {
+  transform: scale(0.95);
+}
+
+.market-chip.market-chip--active {
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+}
+
+.market-chip .market-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.market-chip.market-chip--active .market-chip-dot {
+  opacity: 1;
+}
+
+/* ==========================================
+   CATALOG CARD — Mobile touch animation
+   ========================================== */
+
+.catalog-card-wrap {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hero CTA buttons — full width on mobile */
+@media (max-width: 639px) {
+  .hero-cta-wrap {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-cta-wrap > a {
+    width: 100%;
+  }
+  .hero-cta-wrap .spk-wrapper {
+    width: 100%;
+  }
+  .hero-cta-wrap .spk-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 

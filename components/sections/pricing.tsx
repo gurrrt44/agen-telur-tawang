@@ -12,7 +12,6 @@ import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
 import { CursorGlowCard } from "@/components/ui/cursor-glow-card";
 import { OdometerPrice } from "@/components/ui/odometer-price";
-import { SparkleButton } from "@/components/ui/sparkle-button";
 
 
 
@@ -159,19 +158,25 @@ export function Pricing() {
           </div>
         </FadeIn>
 
-        {/* Market selector */}
+        {/* Market selector — Mobile-friendly horizontal chip scroll */}
         <FadeIn delay={0.1}>
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <span className="mr-2 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Pilih pasar:</span>
-            {MARKETS.map((m) => (
-              <SparkleButton
-                key={m.id}
-                isActive={marketId === m.id}
-                onClick={() => setMarketId(m.id)}
-              >
-                {m.name} · {m.city}
-              </SparkleButton>
-            ))}
+          <div className="mt-10">
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground block mb-3">
+              Pilih pasar:
+            </span>
+            <div className="market-chip-scroll">
+              {MARKETS.map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => setMarketId(m.id)}
+                  className={`market-chip${marketId === m.id ? " market-chip--active" : ""}`}
+                >
+                  <span className="market-chip-dot" />
+                  {m.name} · {m.city}
+                </button>
+              ))}
+            </div>
           </div>
         </FadeIn>
 
