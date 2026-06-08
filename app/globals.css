@@ -110,7 +110,7 @@
 
   html {
     font-size: var(--font-size);
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   /* Better contrast for muted text — elderly readability */

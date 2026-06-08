@@ -88,7 +88,7 @@ export function Hero() {
           <FadeIn delay={0.8}>
             <dl className="mt-14 grid max-w-2xl grid-cols-3 gap-4 sm:gap-8 border-t border-border pt-8">
               {[{ k: "Peternak Mitra", v: "17" }, { k: "Butir / Hari", v: "8.400" }, { k: "Pelanggan Aktif", v: "312" }].map((s, i) => (
-                <motion.div key={s.k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ delay: 0.1 * i, duration: 0.6 }}>
+                <motion.div key={s.k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "0px 0px -40px 0px" }} transition={{ delay: 0.1 * i, duration: 0.6 }}>
                   <dt className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{s.k}</dt>
                   <dd className="mt-2 font-serif text-3xl font-semibold">{s.v}</dd>
                 </motion.div>
