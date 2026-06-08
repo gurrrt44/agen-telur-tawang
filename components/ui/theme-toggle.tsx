@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from "motion/react";
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [isAnimating, setIsAnimating] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");
@@ -14,90 +12,20 @@ export function ThemeToggle() {
   }, []);
 
   const toggleTheme = useCallback(() => {
-    if (isAnimating) return;
-
     const nextTheme = theme === "light" ? "dark" : "light";
-
-    // Get button position for circular wipe origin
-    const btn = buttonRef.current;
-    if (!btn) return;
-    const rect = btn.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-
-    // Calculate max radius needed to cover entire viewport
-    const maxRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    );
-
-    // Try View Transitions API first (modern browsers)
-    if (document.startViewTransition) {
-      setIsAnimating(true);
-
-      // Set CSS custom property for circle origin
-      document.documentElement.style.setProperty("--toggle-x", `${x}px`);
-      document.documentElement.style.setProperty("--toggle-y", `${y}px`);
-      document.documentElement.style.setProperty("--toggle-max-r", `${maxRadius}px`);
-
-      const transition = document.startViewTransition(() => {
-        setTheme(nextTheme);
-        localStorage.setItem("theme", nextTheme);
-        if (nextTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      });
-
-      transition.finished.then(() => {
-        setIsAnimating(false);
-      });
+    setTheme(nextTheme);
+    localStorage.setItem("theme", nextTheme);
+    if (nextTheme === "dark") {
+      document.documentElement.classList.add("dark");
     } else {
-      // Fallback: use overlay element for circular wipe
-      setIsAnimating(true);
-
-      const overlay = document.createElement("div");
-      overlay.style.cssText = `
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        pointer-events: none;
-        background: ${nextTheme === "dark" ? "#0e0d0a" : "#fbfaf6"};
-        clip-path: circle(0px at ${x}px ${y}px);
-        transition: clip-path 1.8s cubic-bezier(0.22, 1, 0.36, 1);
-      `;
-      document.body.appendChild(overlay);
-
-      // Trigger animation
-      requestAnimationFrame(() => {
-        overlay.style.clipPath = `circle(${maxRadius}px at ${x}px ${y}px)`;
-      });
-
-      // Apply theme change midway
-      setTimeout(() => {
-        setTheme(nextTheme);
-        localStorage.setItem("theme", nextTheme);
-        if (nextTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      }, 900);
-
-      // Remove overlay after animation
-      setTimeout(() => {
-        overlay.remove();
-        setIsAnimating(false);
-      }, 1900);
+      document.documentElement.classList.remove("dark");
     }
-  }, [theme, isAnimating]);
+  }, [theme]);
 
   const isDark = theme === "dark";
 
   return (
     <motion.button
-      ref={buttonRef}
       onClick={toggleTheme}
       className="theme-toggle-pill"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
@@ -111,7 +39,7 @@ export function ThemeToggle() {
             ? "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)"
             : "linear-gradient(135deg, #7dd3fc 0%, #38bdf8 50%, #0ea5e9 100%)",
         }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
       >
         {/* Stars (visible in dark mode) */}
         <AnimatePresence>
@@ -128,31 +56,13 @@ export function ThemeToggle() {
                 <motion.span
                   key={`star-${i}`}
                   className="theme-toggle-star"
-                  style={{
-                    top: star.top,
-                    left: star.left,
-                    width: star.size,
-                    height: star.size,
-                  }}
+                  style={{ top: star.top, left: star.left, width: star.size, height: star.size }}
                   initial={{ opacity: 0, scale: 0 }}
-                  animate={{
-                    opacity: [0.4, 1, 0.4],
-                    scale: [0.8, 1.2, 0.8],
-                  }}
+                  animate={{ opacity: [0.4, 1, 0.4], scale: [0.8, 1.2, 0.8] }}
                   exit={{ opacity: 0, scale: 0 }}
                   transition={{
-                    opacity: {
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: star.delay,
-                    },
-                    scale: {
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: star.delay,
-                    },
+                    opacity: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: star.delay },
+                    scale: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: star.delay },
                   }}
                 />
               ))}
@@ -182,66 +92,33 @@ export function ThemeToggle() {
           )}
         </AnimatePresence>
 
-        {/* The knob (sun/moon) — springy with stutter */}
+        {/* The knob (sun/moon) */}
         <motion.div
           className="theme-toggle-knob"
-          animate={{
-            x: isDark ? 20 : 0,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 700,
-            damping: 15,
-            mass: 1.2,
-            restDelta: 0.01,
-          }}
+          animate={{ x: isDark ? 20 : 0 }}
+          transition={{ type: "spring", stiffness: 400, damping: 28, mass: 1 }}
         >
-          {/* Sun/Moon icon with stepped stuttering rotation */}
           <AnimatePresence mode="wait">
             {!isDark ? (
               <motion.div
                 key="sun"
                 className="theme-toggle-icon-wrap"
-                initial={{ rotate: -180, scale: 0, opacity: 0 }}
-                animate={{
-                  rotate: [null, -60, -20, 10, -5, 0],
-                  scale: [0, 0.6, 1.15, 0.9, 1.05, 1],
-                  opacity: [0, 0.5, 0.8, 1, 1, 1],
-                }}
-                exit={{
-                  rotate: 180,
-                  scale: 0,
-                  opacity: 0,
-                }}
-                transition={{
-                  duration: 0.85,
-                  ease: "easeOut",
-                  times: [0, 0.2, 0.4, 0.6, 0.8, 1],
-                }}
+                initial={{ rotate: -90, scale: 0, opacity: 0 }}
+                animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                exit={{ rotate: 90, scale: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
               >
-                {/* Sun body */}
                 <div className="theme-toggle-sun">
                   <div className="theme-toggle-sun-face" />
                 </div>
-                {/* Sun rays — appear one by one with stagger delay */}
                 {Array.from({ length: 8 }).map((_, i) => (
                   <motion.span
                     key={`ray-${i}`}
                     className="theme-toggle-ray"
-                    style={{
-                      transform: `rotate(${i * 45}deg) translateY(-12px)`,
-                    }}
+                    style={{ transform: `rotate(${i * 45}deg) translateY(-12px)` }}
                     initial={{ scaleY: 0, opacity: 0 }}
-                    animate={{
-                      scaleY: [0, 1.5, 0.7, 1.2, 1],
-                      opacity: [0, 1, 0.6, 1, 0.85],
-                    }}
-                    transition={{
-                      duration: 0.65,
-                      delay: 0.2 + i * 0.05,
-                      ease: "easeOut",
-                      times: [0, 0.3, 0.5, 0.7, 1],
-                    }}
+                    animate={{ scaleY: 1, opacity: 0.85 }}
+                    transition={{ duration: 0.25, delay: i * 0.02, ease: "easeOut" }}
                   />
                 ))}
               </motion.div>
@@ -249,25 +126,12 @@ export function ThemeToggle() {
               <motion.div
                 key="moon"
                 className="theme-toggle-icon-wrap"
-                initial={{ rotate: 180, scale: 0, opacity: 0 }}
-                animate={{
-                  rotate: [null, 60, 20, -10, 5, 0],
-                  scale: [0, 0.6, 1.2, 0.85, 1.05, 1],
-                  opacity: [0, 0.5, 0.8, 1, 1, 1],
-                }}
-                exit={{
-                  rotate: -180,
-                  scale: 0,
-                  opacity: 0,
-                }}
-                transition={{
-                  duration: 0.85,
-                  ease: "easeOut",
-                  times: [0, 0.2, 0.4, 0.6, 0.8, 1],
-                }}
+                initial={{ rotate: 90, scale: 0, opacity: 0 }}
+                animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                exit={{ rotate: -90, scale: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
               >
                 <div className="theme-toggle-moon">
-                  {/* Moon crescent cutout */}
                   <div className="theme-toggle-moon-crater" />
                 </div>
               </motion.div>

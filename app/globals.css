@@ -120,32 +120,12 @@
 }
 
 /* ==========================================
-   VIEW TRANSITIONS — Circular Wipe Effect
-   Works in BOTH directions (light→dark & dark→light)
+   THEME COLOR TRANSITION — lightweight, no full-page screenshot
+   Only transitions color/background, not layout
    ========================================== */
 
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 9999;
-  animation: circle-wipe-in 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes circle-wipe-in {
-  from {
-    clip-path: circle(0% at var(--toggle-x, 50%) var(--toggle-y, 50%));
-  }
-  to {
-    clip-path: circle(150% at var(--toggle-x, 50%) var(--toggle-y, 50%));
-  }
+html {
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* ==========================================
