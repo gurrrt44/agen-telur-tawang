@@ -120,38 +120,16 @@
 }
 
 /* ==========================================
-   THEME COLOR TRANSITION — lightweight, no full-page screenshot
-   Only transitions color/background, not layout
+   THEME COLOR TRANSITION — smooth background fade
    ========================================== */
 
 html {
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* ==========================================
-   VIEW TRANSITIONS — Circle Wipe (cepat 0.4s)
+   THEME TOGGLE STYLES (SunEgg-inspired)
    ========================================== */
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 9999;
-  animation: circle-wipe-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes circle-wipe-in {
-  from { clip-path: circle(0% at var(--toggle-x, 50%) var(--toggle-y, 50%)); }
-  to   { clip-path: circle(150% at var(--toggle-x, 50%) var(--toggle-y, 50%)); }
-}
-
 
 .theme-toggle-pill {
   position: relative;
