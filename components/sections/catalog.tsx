@@ -6,7 +6,6 @@ import { BUNDLES } from "@/lib/data";
 import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
 import { CursorGlowCard } from "@/components/ui/cursor-glow-card";
-import { SparkleButton } from "@/components/ui/sparkle-button";
 
 interface CatalogProps {
   onSelectBundle: (id: string) => void;
@@ -42,9 +41,9 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
               className="catalog-card-wrap"
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-40px" }}
+              viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.06, type: "spring", stiffness: 130, damping: 18 }}
-              whileTap={{ scale: 0.97, transition: { type: "spring", stiffness: 400, damping: 20 } }}
+              whileTap={{ scale: 0.98, transition: { type: "spring", stiffness: 400, damping: 20 } }}
             >
               <CursorGlowCard className="catalog-card flex h-full flex-col border border-border bg-card p-7 transition hover:border-transparent">
                 <div className="flex items-start justify-between font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
@@ -68,9 +67,13 @@ export function Catalog({ onSelectBundle }: CatalogProps) {
                 </div>
 
                 <div className="mt-5">
-                  <SparkleButton onClick={() => handlePesan(b.id)} fullWidth>
-                    Pesan paket ini  ↗
-                  </SparkleButton>
+                  <button
+                    type="button"
+                    onClick={() => handlePesan(b.id)}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-foreground px-5 py-3 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-background transition active:scale-95 hover:opacity-90"
+                  >
+                    Pesan paket ini <ArrowUpRight className="size-3.5" />
+                  </button>
                 </div>
               </CursorGlowCard>
             </motion.div>

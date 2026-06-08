@@ -5,7 +5,6 @@ import { motion, useMotionValue, useTransform } from "motion/react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
-import { SparkleButton } from "@/components/ui/sparkle-button";
 
 export function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -58,16 +57,22 @@ export function Hero() {
           </h1>
           <FadeIn delay={0.5}>
             <p className="mt-8 max-w-xl font-serif text-xl leading-relaxed text-muted-foreground font-medium">
-              "Agen Telur Tawang" memasok telur ayam grade A pilihan untuk rumah tangga, warung, dan resto di sekitar Tawang, Mojokrapak dan sekitarnya. Dikemas hari yang sama, diantar dalam 24 jam.
+              &ldquo;Agen Telur Tawang&rdquo; memasok telur ayam grade A pilihan untuk rumah tangga, warung, dan resto di sekitar Tawang, Mojokrapak dan sekitarnya. Dikemas hari yang sama, diantar dalam 24 jam.
             </p>
           </FadeIn>
           <FadeIn delay={0.6}>
-            <div className="mt-10 flex flex-wrap items-center gap-4 hero-cta-wrap">
-              <a href="#paket">
-                <SparkleButton>Lihat Paket  ↗</SparkleButton>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+              <a
+                href="#paket"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-foreground px-6 py-3 font-mono text-sm font-semibold uppercase tracking-[0.14em] text-background transition active:scale-95 hover:opacity-90"
+              >
+                Lihat Paket <ArrowUpRight className="size-4" />
               </a>
-              <a href="#harga">
-                <SparkleButton>Harga Hari Ini</SparkleButton>
+              <a
+                href="#harga"
+                className="inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-card px-6 py-3 font-mono text-sm font-semibold uppercase tracking-[0.14em] text-foreground transition active:scale-95 hover:bg-secondary"
+              >
+                Harga Hari Ini
               </a>
             </div>
           </FadeIn>
